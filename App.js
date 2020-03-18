@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AuthContext } from './components/context'
 import SplashScreen from './screens/SplashScreen'
-import SignInScreen from './screens/LoginScreen'
+import StartScreen from './screens/LoginScreen'
 import HomeScreen from './screens/HomeScreen'
 
 const Stack = createStackNavigator();
@@ -93,7 +93,7 @@ export default function App({ navigation }) {
           ) : state.userToken == null ? (
             <Stack.Screen
               name="SignIn"
-              component={SignInScreen}
+              component={StartScreen}
               options={{
                 title: null,
                 animationTypeForReplace: state.isSignout ? 'pop' : 'push',
