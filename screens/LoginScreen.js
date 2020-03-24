@@ -40,6 +40,11 @@ export default function LoginScreen({navigation}){
                             <Text style = {styles.text}>START</Text>
                         </TouchableOpacity>
 
+                        <View style = {styles.detailContainer}>
+                            <Text style = {styles.detailA}>FROM</Text>
+                            <Text style = {styles.detailB}>KMUTT</Text>
+                        </View>
+
                 </View>
             </KeyboardAvoidingView>
         </View>
@@ -59,24 +64,21 @@ const styles = StyleSheet.create({
         marginBottom: 50,
     },
 
+    detailContainer:{
+        alignItems: 'center',
+        marginTop: 80,
+    },
+
     logo : {
-        width:200,
-        height:200
+        marginTop:80,
+        width:300,
+        height:300
     },
 
     logoText: {
         color: 'black',
         fontSize: 30,
         fontWeight: '500',
-        marginTop: 10,
-        opacity: 0.8,
-    },
-
-    logoText: {
-        color: 'black',
-        fontSize: 30,
-        fontWeight: '500',
-        marginTop: 10,
         opacity: 0.8,
     },
     input : {
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
         left : 37,
     },
     inputContainer: {
-        marginTop : 20,
+        marginTop : 5,
     },
     btnEye : {
         position: 'absolute',
@@ -106,9 +108,10 @@ const styles = StyleSheet.create({
         width: WIDTH - 55,
         height : 45,
         borderRadius: 25,
-        backgroundColor: '#1F618D',
+        backgroundColor: '#1A1260',
         justifyContent: 'center',
-        marginTop: 20
+        marginTop: 25,
+        marginBottom: 100
     },
 
     btnSign: {
@@ -124,5 +127,17 @@ const styles = StyleSheet.create({
         color : '#FFF',
         fontSize: 16,
         textAlign: 'center'
+    },
+
+    detailA:{
+        color : 'black',
+        fontSize : 15,
+        fontWeight: "300",
+    },
+
+    detailB:{
+        color : '#d78547',
+        fontSize : 20,
+        fontWeight: "bold",
     }
 })

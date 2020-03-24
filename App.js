@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AuthContext } from './components/context'
 import SplashScreen from './screens/SplashScreen'
 import StartScreen from './screens/LoginScreen'
-import HomeScreen from './screens/HomeScreen'
+import MainNavigator from './navigator/MainNavigator'
 
 const Stack = createStackNavigator();
 
@@ -95,13 +95,26 @@ export default function App({ navigation }) {
               name="SignIn"
               component={StartScreen}
               options={{
-                title: null,
+                headerShown: false,
                 animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+
               }}
             />
           ) : (
             // User is signed in
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Main" 
+                          component={MainNavigator} 
+                          options={{
+                            headerShown: false,
+                            headerStyle: {
+                              backgroundColor: 'rgba(0,122,255,0.7)',
+                            },
+                            headerTintColor: '#fff',
+                            headerTitleStyle:{
+                              fontWeight: 'bold',
+                            }
+                          }}
+            />
           )}
         </Stack.Navigator>
       </NavigationContainer>

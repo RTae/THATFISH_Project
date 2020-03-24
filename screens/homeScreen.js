@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions} from 'react-native';
 import { AuthContext } from '../components/context'
+import { Card, Header, Icon } from 'react-native-elements'
 
 const {width : WIDTH} = Dimensions.get('window')
 
@@ -8,7 +9,21 @@ export default function HomeScreen() {
   const { signOut } = React.useContext(AuthContext);
 
   return (
+      
       <View style = {styles.container} >
+              <Header
+                    statusBarProps={{ barStyle: 'light-content' }}
+                    barStyle="light-content" // or directly
+                    centerComponent={{ text: 'รายการปลาที่เลี้ยง', 
+                                        style: { 
+                                        color: '#fff',
+                                        fontSize:20,
+                                        fontWeight:'bold'
+                                        } }}
+                    containerStyle={{
+                                backgroundColor: '#1A1260',
+                                justifyContent: 'space-around',
+                                }}/>
         <View style = {styles.logoContainer}>
           <Text style = {styles.logoText}>THATFISH</Text>
         </View>
@@ -25,14 +40,11 @@ export default function HomeScreen() {
   const styles = StyleSheet.create({
     container: {
         flex : 1,
-        justifyContent : 'center',
-        alignItems : 'center',
         backgroundColor: '#FFF',
     },
 
     logoContainer:{
         alignItems: 'center',
-        marginBottom: 50,
     },
 
     logo : {
@@ -55,34 +67,11 @@ export default function HomeScreen() {
         marginTop: 10,
         opacity: 0.8,
     },
-    input : {
-        width: WIDTH - 55,
-        height : 45,
-        borderRadius: 25,
-        fontSize: 16,
-        paddingLeft: 45,
-        backgroundColor: 'rgba(0,122,255,0.7)',
-        color: 'rgba(255,255,255,0.7)',
-        marginHorizontal: 25
-    },
-    inputIcon: {
-        position: 'absolute',
-        top: 8,
-        left : 37,
-    },
-    inputContainer: {
-        marginTop : 20,
-    },
-    btnEye : {
-        position: 'absolute',
-        top: 8,
-        right: 37,
-    },
     btnLogin: {
         width: WIDTH - 55,
         height : 45,
         borderRadius: 25,
-        backgroundColor: '#1F618D',
+        backgroundColor: '#1A1260',
         justifyContent: 'center',
         marginTop: 20
     },
