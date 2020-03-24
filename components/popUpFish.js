@@ -10,8 +10,11 @@ export const PopUpFish = (props) => {
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={[styles.textTitle,{fontFamily:props.fontTitle}]}>{props.title}</Text>
+            <Image
+            style={{width: 200, height: 200}}
+            source={{uri: props.pic}}
+            /> 
             </View>
-            <Text>{props.pic}</Text>
         </View>
     )
   }

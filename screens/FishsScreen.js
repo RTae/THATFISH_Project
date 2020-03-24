@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, FlatList, View, Text, ActivityIndicator } from 'react-native'
+import { List, ListItem } from 'react-native-elements'
 import Modal from 'react-native-modal';
 import * as Font from 'expo-font'
 import { FishButton } from '../components/ิFishButton'
@@ -15,7 +16,7 @@ export default class FishScreen extends React.Component {
       fetchState: false,
       popupState:false,
       dataSource: null,
-      dataKey: null,
+      responseJson: null,
       titlePopup: null,
       picPopup:null,
       bioPopup:null,
@@ -40,16 +41,16 @@ export default class FishScreen extends React.Component {
     .then((response) => response.json())
     .then((responseJson) => {
       var datas = []
-      var keys = []
       for(var key in responseJson){
+        var item = responseJson[key]
+        item.id = key
         datas.push(responseJson[key])
-        keys.push(responseJson[key]['name'])
        }
 
       this.setState({
         fetchState: true,
         dataSource: datas,
-        dataKey: keys
+        jsonDictDatas: responseJson
       });
     })
     .catch((error) =>{
@@ -57,38 +58,42 @@ export default class FishScreen extends React.Component {
     });
   }
 
-  _popUp = (name) => {
-    var index = this.state.dataKey.indexOf(name)
-    var pic = ''
-    var bio = ''
-    var eye = ''
-    var size = ''
-    if(index != -1){
-      pic = this.state.dataSource[index]['tableFeed']
+  _popUp = (id) => {
+    var data = this.state.jsonDictDatas[id]
+    if(this.state.popupState != true){
+      this.setState({
+        popupState:!this.state.popupState,
+        titlePopup:data['name'],
+        picPopup:data['tableFeed']
+      })
     }
-    this.setState({
-      popupState:!this.state.popupState,
-      titlePopup:name,
-      picPopup:pic
-    })
+    else{
+      this.setState({
+        popupState:!this.state.popupState,
+      })
+    }
+    
   }
 
   render(){
     if(this.state.fetchState){
+      var data = this.state.dataSource
       return (
         <View style={styles.container}>
           <HeadFish/>
           <View style={styles.FlastListView}>
-          <FlatList
-            data={this.state.dataSource}
-            renderItem={({item}) => 
-            <FishButton
-              title = {item.name}
-              onPress = {() => this._popUp(item.name)}
-            />
+            {
+              data.map((item, index) => (
+                <React.Fragment key = {item.id}>
+                  <FishButton
+                    title = {item.name}
+                    onPress = {() => this._popUp(item.id)}
+                  />
+                </React.Fragment>
+              ))
             }
-            keyExtractor={({id}, index) => id}
-          />
+          </View> 
+          <View>  
           <Modal isVisible={this.state.popupState}
                 onSwipeComplete = {() => this._popUp()} 
                 swipeDirection="left">
