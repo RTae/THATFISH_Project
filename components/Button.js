@@ -4,7 +4,7 @@ import * as Font from 'expo-font'
 
 const {width : WIDTH} = Dimensions.get('window')
 
-export const FishButton = (props) => {
+export const Button = (props) => {
  
   const { title = 'Enter', onPress }  = props
 
@@ -15,19 +15,12 @@ export const FishButton = (props) => {
   const _loadFont = async () =>{
     await Font.loadAsync({
       Priyati: require('../assets/fonts/Priyati-Regular.ttf'),
-      Layiji: require('../assets/fonts/Layiji.ttf'),
     })
   }
 
   return (
     <TouchableOpacity style = {styles.btnLogin}
                       onPress = {onPress}>
-        <View style = {styles.picContainer}>
-          <Image
-              style={styles.image}
-              source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}
-          />
-        </View>
         <View style = {styles.textContainer}>
           <Text style = {styles.text}>
             {props.title}
@@ -39,33 +32,20 @@ export const FishButton = (props) => {
 
 const styles = StyleSheet.create({
 
-  picContainer:{
-    flex:0.1,
-  },
-
   textContainer:{
-    flex:0.7,
+    flex:0.5,
   },
   text: {
     color : '#FFF',
-    fontSize: 30,
-    textAlign: 'center',
-    fontFamily:'Layiji'
-  },
-  image:{
-    width: 50,
-    height: 50,
-    resizeMode: 'contain'
+    fontSize: 16,
+    textAlign: 'center'
   },
   btnLogin: {
-    width: WIDTH - 80,
-    height : 80,
+    width: WIDTH - 55,
+    height : 45,
     borderRadius: 25,
     backgroundColor: '#1A1260',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
-    flexDirection:'row'
-  },
+    marginTop: 18,
+},
 });

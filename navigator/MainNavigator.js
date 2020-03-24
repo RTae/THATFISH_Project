@@ -2,10 +2,10 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import HomeScreen from '../screens/HomeScreen'
+import { HomeScreen } from '../screens/HomeScreen'
 import { FishScreen } from '../screens/FishsScreen'
 import { PreCal } from '../screens/CalScreen'
-import CallCalScreen from '../screens/CallCalScreen'
+import { Calulate } from '../screens/CallCalScreen'
 
 const Tab = createBottomTabNavigator()
 const CalStack = createStackNavigator()
@@ -19,12 +19,21 @@ const CalStackScreen = () => {
         options={{
           headerShown: false,
         }}
-        />
+      />
+
       <CalStack.Screen
         name='Calulate'
-        component={CallCalScreen}
+        component={Calulate}
         options={{
-          headerShown: false,
+          headerShown: true,
+          title: 'คำนวณปริมาณอาหาร',
+          headerStyle: {
+            backgroundColor: '#1A1260',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         }}
       />
     </CalStack.Navigator>
@@ -43,7 +52,7 @@ export default function MainNavigator({navigation}) {
         } else if (route.name === 'Fishs') {
           iconName = focused ? 'view-list' : 'format-list-bulleted';
         }
-        else if (route.name === 'Cal') {
+        else if (route.name === 'Calculate') {
           iconName = focused ? 'cube' : 'fish';
           
         }
@@ -67,7 +76,7 @@ export default function MainNavigator({navigation}) {
                     options = {{
                               title: 'FISHS',
                     }}/>
-        <Tab.Screen name="Cal" 
+        <Tab.Screen name="Calculate" 
                     component={CalStackScreen} />
       </Tab.Navigator>
   );

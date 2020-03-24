@@ -101,6 +101,8 @@ export const FishScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF',
+
   },
   containerLoadingIndicator: {
     flex: 1,

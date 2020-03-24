@@ -1,34 +1,51 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions} from 'react-native';
+import React, { useState, useEffect } from "react";
+import * as Font from 'expo-font'
+import { StyleSheet, Text, View} from 'react-native';
 import { AuthContext } from '../components/context'
 import { HeadFish } from '../components/HeaderFish'
+import { Button } from '../components/Button'
 
-const {width : WIDTH} = Dimensions.get('window')
+export const HomeScreen = () =>{
 
-export default function HomeScreen() {
+  useEffect(() =>{
+    _loadFont()
+  },[])
+
+  const _loadFont = async () =>{
+    await Font.loadAsync({
+      Layiji: require('../assets/fonts/Layiji.ttf'),
+    })
+  }
+
   const { signOut } = React.useContext(AuthContext);
 
   return (
-      
       <View style = {styles.container} >
         <HeadFish title = {'รายการปลาที่เลี้ยง'} />
-        <View style = {styles.logoContainer}>
-          <Text style = {styles.logoText}>THATFISH</Text>
+        <View style = {styles.containerDetail}>
+          <View style = {styles.logoContainer}>
+            <Text style = {styles.logoText}>THATFISH</Text>
+          </View>
+
+          <Button
+            title = {'SIGNOUT'}
+            onPress = {signOut}
+          />
         </View>
-
-        <TouchableOpacity style = {styles.btnLogin}
-                          onPress = {signOut}>
-          <Text style = {styles.text}>SIGNOUT</Text>
-        </TouchableOpacity>
-
       </View>
-    );
+    )
   }
 
   const styles = StyleSheet.create({
     container: {
-        flex : 1,
-        backgroundColor: '#FFF',
+      flex : 1,
+      backgroundColor: '#FFF',
+    },
+
+    containerDetail:{
+      justifyContent : 'center',
+      alignItems : 'center',
+      backgroundColor: '#FFF',
     },
 
     logoContainer:{
@@ -42,35 +59,10 @@ export default function HomeScreen() {
 
     logoText: {
         color: 'black',
-        fontSize: 30,
+        fontSize: 80,
         fontWeight: '500',
-        marginTop: 10,
-        opacity: 0.8,
-    },
-
-    logoText: {
-        color: 'black',
-        fontSize: 30,
-        fontWeight: '500',
-        marginTop: 10,
-        opacity: 0.8,
-    },
-    btnLogin: {
-        width: WIDTH - 55,
-        height : 45,
-        borderRadius: 25,
-        backgroundColor: '#1A1260',
-        justifyContent: 'center',
-        marginTop: 20
-    },
-
-    btnSign: {
-        width: WIDTH - 55,
-        height : 45,
-        borderRadius: 25,
-        backgroundColor: '#1F618D',
-        justifyContent: 'center',
-        marginTop: 20
+        marginTop: 20,
+        fontFamily: 'Layiji',
     },
 
     text: {

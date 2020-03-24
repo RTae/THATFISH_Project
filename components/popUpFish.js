@@ -14,6 +14,7 @@ export const PopUpFish = (props) => {
     const _loadFont = async () =>{
         await Font.loadAsync({
           Priyati: require('../assets/fonts/Priyati-Regular.ttf'),
+          Nithan: require('../assets/fonts/Nithan.ttf')
         })
     }
   
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
 
     textTitle:{
         fontSize:60,
-        fontWeight:'normal',
-        fontFamily:'Priyati'
+        fontWeight:'500',
+        fontFamily:'Nithan'
     }
 })

@@ -1,32 +1,28 @@
-import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator, ScrollView, Text } from 'react-native'
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text } from 'react-native'
+import { Button } from '../components/Button'
 
-export default class CallCalScreen extends React.Component{
-    constructor(props){
-        super(props)
-        this.state = {
-
-        }
-    }
-
-    render(){
-        return(
-            <View style = {styles.container}>
-                <Text>
-                    Hello this is CallCalScreen
-                </Text>
-            </View>
-        )
-    }
+export const Calulate = ({navigation}) => {
+    return(
+        <View style = {styles.container}>
+           <Button
+                title='back'
+                onPress={() => navigation.goBack()}
+           />
+        </View>
+    )
 }
+
 
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'center'
-
+      flex : 1,
+      justifyContent : 'center',
+      alignItems : 'center',
+      backgroundColor: '#FFF',
     },
+    
     text: {
       flex: 1,
     },

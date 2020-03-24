@@ -1,13 +1,26 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
+import * as Font from 'expo-font'
 import {StyleSheet, View, Text, Image, Dimensions, TouchableOpacity, KeyboardAvoidingView, } from 'react-native'
 import Logo from '../assets/images/icon.png'
 import { TextInput } from 'react-native-gesture-handler'
-import {FontAwesome5} from '@expo/vector-icons'
+import { FontAwesome5 } from '@expo/vector-icons'
 import { AuthContext } from "../components/context";
+import { Button } from '../components/Button';
 
 const {width : WIDTH} = Dimensions.get('window')
 
 export default function LoginScreen({navigation}){
+
+    useEffect(() =>{
+      _loadFont()
+    },[])
+
+    const _loadFont = async () =>{
+      await Font.loadAsync({
+        Layiji: require('../assets/fonts/Layiji.ttf'),
+      })
+    }
+
     const [Name, setName] = React.useState('');
     const { signIn } = React.useContext(AuthContext);
 
@@ -35,10 +48,11 @@ export default function LoginScreen({navigation}){
                                 color = '#FFF'
                                 style = {styles.inputIcon}/>
                         </View>
-                        <TouchableOpacity style = {styles.btnLogin}
-                                        onPress = {() => signIn({Name})}>
-                            <Text style = {styles.text}>START</Text>
-                        </TouchableOpacity>
+                        
+                        <Button
+                            title = {'START'}
+                            onPress = {() => signIn({Name})}
+                        />
 
                         <View style = {styles.detailContainer}>
                             <Text style = {styles.detailA}>FROM</Text>
@@ -61,25 +75,24 @@ const styles = StyleSheet.create({
 
     logoContainer:{
         alignItems: 'center',
-        marginBottom: 50,
     },
 
     detailContainer:{
         alignItems: 'center',
-        marginTop: 80,
+        marginTop: 110,
     },
 
     logo : {
-        marginTop:80,
         width:300,
-        height:300
+        height:300,
+        resizeMode: 'contain'
     },
 
     logoText: {
         color: 'black',
-        fontSize: 30,
-        fontWeight: '500',
-        opacity: 0.8,
+        fontSize: 70,
+        fontFamily:'Layiji',
+        opacity: 1,
     },
     input : {
         width: WIDTH - 55,
@@ -104,25 +117,6 @@ const styles = StyleSheet.create({
         top: 8,
         right: 37,
     },
-    btnLogin: {
-        width: WIDTH - 55,
-        height : 45,
-        borderRadius: 25,
-        backgroundColor: '#1A1260',
-        justifyContent: 'center',
-        marginTop: 25,
-        marginBottom: 100
-    },
-
-    btnSign: {
-        width: WIDTH - 55,
-        height : 45,
-        borderRadius: 25,
-        backgroundColor: '#1F618D',
-        justifyContent: 'center',
-        marginTop: 20
-    },
-
     text: {
         color : '#FFF',
         fontSize: 16,
