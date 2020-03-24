@@ -1,11 +1,35 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen'
-import FishsScreen from '../screens/FishsScreen'
-import CalScreen from '../screens/CalScreen'
+import { FishScreen } from '../screens/FishsScreen'
+import { PreCal } from '../screens/CalScreen'
+import CallCalScreen from '../screens/CallCalScreen'
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
+const CalStack = createStackNavigator()
+
+const CalStackScreen = () => {
+  return (
+    <CalStack.Navigator>
+      <CalStack.Screen
+        name='PreCal'
+        component={PreCal}
+        options={{
+          headerShown: false,
+        }}
+        />
+      <CalStack.Screen
+        name='Calulate'
+        component={CallCalScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </CalStack.Navigator>
+  )
+}
 
 export default function MainNavigator({navigation}) {
   return (
@@ -19,12 +43,10 @@ export default function MainNavigator({navigation}) {
         } else if (route.name === 'Fishs') {
           iconName = focused ? 'view-list' : 'format-list-bulleted';
         }
-        else if (route.name === 'Calculate') {
+        else if (route.name === 'Cal') {
           iconName = focused ? 'cube' : 'fish';
           
         }
-
-        // You can return any component that you like here!
         return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
       },
     })}
@@ -41,12 +63,12 @@ export default function MainNavigator({navigation}) {
                               title: 'Home',
                     }}/>
         <Tab.Screen name="Fishs" 
-                    component={FishsScreen} 
+                    component={FishScreen} 
                     options = {{
                               title: 'FISHS',
                     }}/>
-        <Tab.Screen name="Calculate" 
-                    component={CalScreen} />
+        <Tab.Screen name="Cal" 
+                    component={CalStackScreen} />
       </Tab.Navigator>
   );
 }

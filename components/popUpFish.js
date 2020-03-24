@@ -1,15 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import * as Font from 'expo-font'
 import { StyleSheet, Image, View, Text } from 'react-native'
 
 
 export const PopUpFish = (props) => {
  
-    const { title, pic, fontTitle }  = props
+    const { title, pic }  = props
+
+    useEffect(() =>{
+        _loadFont()
+      },[])
+
+    const _loadFont = async () =>{
+        await Font.loadAsync({
+          Priyati: require('../assets/fonts/Priyati-Regular.ttf'),
+        })
+    }
   
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={[styles.textTitle,{fontFamily:props.fontTitle}]}>{props.title}</Text>
+                <Text style={styles.textTitle}>{props.title}</Text>
             <Image
             style={{width: 200, height: 200}}
             source={{uri: props.pic}}
@@ -33,5 +44,6 @@ const styles = StyleSheet.create({
     textTitle:{
         fontSize:60,
         fontWeight:'normal',
+        fontFamily:'Priyati'
     }
 })

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions} from 'react-native';
 import { AuthContext } from '../components/context'
-import { Card, Header, Icon } from 'react-native-elements'
+import { HeadFish } from '../components/HeaderFish'
 
 const {width : WIDTH} = Dimensions.get('window')
 
@@ -11,19 +11,7 @@ export default function HomeScreen() {
   return (
       
       <View style = {styles.container} >
-              <Header
-                    statusBarProps={{ barStyle: 'light-content' }}
-                    barStyle="light-content" // or directly
-                    centerComponent={{ text: 'รายการปลาที่เลี้ยง', 
-                                        style: { 
-                                        color: '#fff',
-                                        fontSize:20,
-                                        fontWeight:'bold'
-                                        } }}
-                    containerStyle={{
-                                backgroundColor: '#1A1260',
-                                justifyContent: 'space-around',
-                                }}/>
+        <HeadFish title = {'รายการปลาที่เลี้ยง'} />
         <View style = {styles.logoContainer}>
           <Text style = {styles.logoText}>THATFISH</Text>
         </View>

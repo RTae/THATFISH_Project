@@ -1,12 +1,13 @@
 import React from 'react';
 import { Header } from 'react-native-elements'
 
-export const HeadFish = () =>{
+export const HeadFish = (props) =>{
+    const { title }  = props
     return (
         <Header
         statusBarProps={{ barStyle: 'light-content' }}
         barStyle="light-content"
-        centerComponent={{ text: 'ประวัติและวิธีการเลียง', 
+        centerComponent={{ text: props.title, 
                           style: { 
                             color: '#fff',
                             fontSize:20,
