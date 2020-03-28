@@ -45,8 +45,10 @@ export const FishScreen = () => {
     var data = DataDicts[id]
     if(PopupState != true){
 
-      setPicPopup(data['tableFeed'])
+      setPicPopup(data['pic'])
       setTitlePopup(data['name'])
+      setBioPopup(data['bio'])
+      setEyePopup(data['idetity'])
       setPopupState(!PopupState)
 
     }
@@ -68,6 +70,7 @@ export const FishScreen = () => {
                 <FishButton
                   title = {item.name}
                   onPress = {() => _popUp(item.id)}
+                  pic = {item.pic}
                 />
               </React.Fragment>
             ))
@@ -80,6 +83,8 @@ export const FishScreen = () => {
               <PopUpFish
                 title = {TitlePopup}
                 pic = {PicPopup}
+                bio = {BioPopup}
+                eye = {EyePopup}
               />
         </Modal>
         </View> 

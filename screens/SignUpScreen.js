@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font'
-import {StyleSheet, View, Text, Image, Dimensions, KeyboardAvoidingView, } from 'react-native'
-import Logo from '../assets/images/icon.png'
+import {StyleSheet, View, Text,  Dimensions, KeyboardAvoidingView, } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { AuthContext } from "../components/context";
@@ -10,7 +9,7 @@ import { SplashScreen } from '../screens/SplashScreen'
 
 const {width : WIDTH} = Dimensions.get('window')
 
-export const LoginScreen = ({navigation}) => {
+export const SignUpScreen = ({navigation}) => {
 
     const [Name, setName] = useState('');
     const [LoadFontState, setLoadFontState] = useState(false)
@@ -27,12 +26,8 @@ export const LoginScreen = ({navigation}) => {
       setLoadFontState(true)
     }
 
-    const onPressLogin = (Name) =>{
-        signIn(Name)
-    }
-
-    const onPressSigup = () =>{
-        navigation.navigate('Register')
+    const onPressRegister = () => {
+        navigation.goBack()
     }
 
     return(
@@ -41,7 +36,6 @@ export const LoginScreen = ({navigation}) => {
             <KeyboardAvoidingView behavior="padding" enabled>
                 <View style = {styles.container} >
                         <View style = {styles.logoContainer}>
-                            <Image source = {Logo} style = {styles.logo}/>
                             <Text style = {styles.logoText}>THATFISH</Text>
                         </View>
 
@@ -60,22 +54,11 @@ export const LoginScreen = ({navigation}) => {
                                 color = '#FFF'
                                 style = {styles.inputIcon}/>
                         </View>
-                        
-                        <Button
-                            title = {'เริ่ม'}
-                            onPress = {() => onPressLogin()}
-                        />
 
                         <Button
                             title = {'ลงทะเบียน'}
-                            onPress = {() => onPressSigup()} 
+                            onPress = {() => onPressRegister()}
                         />
-
-                        <View style = {styles.detailContainer}>
-                            <Text style = {styles.detailA}>FROM</Text>
-                            <Text style = {styles.detailB}>KMUTT</Text>
-                        </View>
-
                 </View>
             </KeyboardAvoidingView>
         ):(
@@ -98,15 +81,6 @@ const styles = StyleSheet.create({
         marginTop:50
     },
 
-    detailContainer:{
-        alignItems: 'center',
-        marginTop: 160,
-    },
-
-    logo : {
-        width:350,
-        height:250,
-    },
 
     logoText: {
         color: 'black',
@@ -125,34 +99,18 @@ const styles = StyleSheet.create({
         color: 'rgba(255,255,255,0.7)',
         marginHorizontal: 25,
         fontFamily:'Layiji',
-
     },
     inputIcon: {
         position: 'absolute',
-        top: 10,
+        top: 8,
         left : 37,
     },
     inputContainer: {
         marginTop : 5,
     },
-
     text: {
         color : '#FFF',
         fontSize: 16,
         textAlign: 'center'
     },
-
-    detailA:{
-        color : 'black',
-        fontSize : 20,
-        fontWeight: "300",
-        fontFamily:'Layiji',
-    },
-
-    detailB:{
-        color : '#d78547',
-        fontSize : 20,
-        fontWeight: "bold",
-
-    }
 })

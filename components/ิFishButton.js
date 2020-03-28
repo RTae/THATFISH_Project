@@ -6,7 +6,7 @@ const {width : WIDTH} = Dimensions.get('window')
 
 export const FishButton = (props) => {
  
-  const { title = 'Enter', onPress }  = props
+  const { title = 'Enter', onPress, pic }  = props
 
   useEffect(() =>{
     _loadFont()
@@ -25,7 +25,7 @@ export const FishButton = (props) => {
         <View style = {styles.picContainer}>
           <Image
               style={styles.image}
-              source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}
+              source={{uri: props.pic}}
           />
         </View>
         <View style = {styles.textContainer}>
@@ -40,11 +40,11 @@ export const FishButton = (props) => {
 const styles = StyleSheet.create({
 
   picContainer:{
-    flex:0.1,
+    flex:0.2,
   },
 
   textContainer:{
-    flex:0.7,
+    flex:0.6,
   },
   text: {
     color : '#FFF',
@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
     fontFamily:'Layiji'
   },
   image:{
-    width: 50,
-    height: 50,
+    width: 80,
+    height: 80,
     resizeMode: 'contain'
   },
   btnLogin: {

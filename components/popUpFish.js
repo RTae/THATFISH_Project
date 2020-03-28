@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font'
+import { SplashScreen } from '../screens/SplashScreen'
 import { StyleSheet, Image, View, Text } from 'react-native'
 
 
 export const PopUpFish = (props) => {
  
-    const { title, pic }  = props
+    const { title, pic, bio, eye }  = props
+    const [LoadFontState, setLoadFontState] = useState(false)
 
     useEffect(() =>{
         _loadFont()
@@ -16,17 +18,37 @@ export const PopUpFish = (props) => {
           Priyati: require('../assets/fonts/Priyati-Regular.ttf'),
           Nithan: require('../assets/fonts/Nithan.ttf')
         })
+        setLoadFontState(true)
     }
   
     return (
         <View style={styles.container}>
-            <View style={styles.titleContainer}>
-                <Text style={styles.textTitle}>{props.title}</Text>
-            <Image
-            style={{width: 200, height: 200}}
-            source={{uri: props.pic}}
-            /> 
-            </View>
+            {LoadFontState ? (
+                <View style={styles.titleContainer}>
+
+                    <View>
+                        <Text style={styles.textTitle}>{props.title}</Text>
+                        <Image
+                            style={styles.image}
+                            source={{uri: props.pic}}
+                        /> 
+                    </View>
+
+                    <View>
+                        <Text>
+                            {props.bio}
+                        </Text>
+                    </View>
+
+                    <View>
+                        <Text>
+                            {props.eye}
+                        </Text>
+                    </View>
+                </View>
+            ):(
+                <SplashScreen/>
+            )}
         </View>
     )
   }
@@ -46,5 +68,11 @@ const styles = StyleSheet.create({
         fontSize:60,
         fontWeight:'500',
         fontFamily:'Nithan'
+    },
+
+    image:{
+        width: 300,
+        height: 200,
+        resizeMode: 'contain'
     }
 })

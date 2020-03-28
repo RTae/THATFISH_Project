@@ -55,6 +55,7 @@ export const PreCal = ({ navigation }) => {
                   <FishButton
                     title = {item.name}
                     onPress = {() => _popUp(item.id)}
+                    pic = {item.pic}
                   />
                 </React.Fragment>
               ))

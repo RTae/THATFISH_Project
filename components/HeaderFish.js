@@ -24,7 +24,7 @@ export const HeadFish = (props) =>{
         centerComponent={{ text: props.title, 
                           style: { 
                             color: '#fff',
-                            fontSize:35,
+                            fontSize:34,
                             fontFamily:'Layiji'
                           } }}
         containerStyle={{

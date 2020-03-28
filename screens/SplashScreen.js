@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, ActivityIndicator} from "react-native";
 
-export default function SplashScreen() {
+export const SplashScreen = () => {
   return (
   <View style={styles.containerLoadingIndicator} >
     <ActivityIndicator size="large" color="#0000ff" />

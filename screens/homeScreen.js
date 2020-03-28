@@ -6,6 +6,9 @@ import { HeadFish } from '../components/HeaderFish'
 import { Button } from '../components/Button'
 
 export const HomeScreen = () =>{
+  
+  const { signOut } = React.useContext(AuthContext);
+
 
   useEffect(() =>{
     _loadFont()
@@ -17,21 +20,24 @@ export const HomeScreen = () =>{
     })
   }
 
-  const { signOut } = React.useContext(AuthContext);
-
+  const onPressSigOut = () => {
+    signOut()
+  }
+  
+    
   return (
       <View style = {styles.container} >
         <HeadFish title = {'รายการปลาที่เลี้ยง'} />
-        <View style = {styles.containerDetail}>
-          <View style = {styles.logoContainer}>
-            <Text style = {styles.logoText}>THATFISH</Text>
-          </View>
+          <View style = {styles.containerDetail}>
+            <View style = {styles.logoContainer}>
+              <Text style = {styles.logoText}>THATFISH</Text>
+            </View>
 
-          <Button
-            title = {'SIGNOUT'}
-            onPress = {signOut}
-          />
-        </View>
+            <Button
+              title = {'ออกจากระบบ'}
+              onPress = {() => onPressSigOut()}
+            />
+          </View>
       </View>
     )
   }
