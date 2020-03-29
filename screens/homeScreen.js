@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font'
 import { StyleSheet, Text, View} from 'react-native';
 import { AuthContext } from '../components/context'
-import { HeadFish } from '../components/HeaderFish'
 import { Button } from '../components/Button'
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Firebase } from '../components/Firebase'
 
 export const HomeScreen = () =>{
   
@@ -23,11 +24,9 @@ export const HomeScreen = () =>{
   const onPressSigOut = () => {
     signOut()
   }
-  
     
   return (
-      <View style = {styles.container} >
-        <HeadFish title = {'รายการปลาที่เลี้ยง'} />
+      <SafeAreaView style = {styles.container} >
           <View style = {styles.containerDetail}>
             <View style = {styles.logoContainer}>
               <Text style = {styles.logoText}>THATFISH</Text>
@@ -38,7 +37,7 @@ export const HomeScreen = () =>{
               onPress = {() => onPressSigOut()}
             />
           </View>
-      </View>
+      </SafeAreaView>
     )
   }
 

@@ -2,8 +2,12 @@ import * as React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import { PreCal } from '../screens/CalScreen'
 import { Calulate } from '../screens/CallCalScreen'
+import { Header } from '../components/Header'
+
 
 const CalStack = createStackNavigator()
+const headerCal = Header('คำนวณปริมาณอาหาร')
+
 
 export const CalculateStack = () => {
   return (
@@ -11,25 +15,13 @@ export const CalculateStack = () => {
       <CalStack.Screen
         name='PreCal'
         component={PreCal}
-        options={{
-          headerShown: false,
-        }}
+        options={headerCal}
       />
 
       <CalStack.Screen
         name='Calulate'
         component={Calulate}
-        options={{
-          headerShown: true,
-          title: 'คำนวณปริมาณอาหาร',
-          headerStyle: {
-            backgroundColor: '#1A1260',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
+        options={headerCal}
       />
     </CalStack.Navigator>
   )

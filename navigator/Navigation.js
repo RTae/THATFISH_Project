@@ -1,22 +1,31 @@
-import * as React from 'react';
-import { AsyncStorage} from 'react-native';
+import React, { useState, useEffect, useReducer, useMemo } from "react";
+import { Alert, AsyncStorage} from 'react-native';
+import * as Font from 'expo-font'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AuthContext } from '../components/context'
 import { SplashScreen } from '../screens/SplashScreen'
 import { MainNavigator } from '../navigator/MainNavigator'
 import { AuthenticationStack } from '../navigator/AuthStack'
+import { Firebase } from '../components/Firebase'
 
 const Stack = createStackNavigator();
 
 export default function Navigation({ navigation }) {
-  const [state, dispatch] = React.useReducer(
+
+  const [LoadFontState, setLoadFontState] = useState(false)
+
+  useEffect( () => {
+    getData()
+    _loadFont()
+  }, [])
+
+  const [state, dispatch] = useReducer(
     (prevState, action) => {
       switch (action.type) {
-        case 'RESTORE_TOKEN':
+        case 'RESTORING_TOKEN':
           return {
             ...prevState,
-            userToken: action.token,
             isLoading: false,
           };
         case 'SIGN_IN':
@@ -31,6 +40,16 @@ export default function Navigation({ navigation }) {
             isSignout: true,
             userToken: null,
           };
+        case 'STILL_SININ':
+          return {
+            ...prevState,
+            isLoading: true,
+          }
+        case 'SUCESS_SININ':
+          return {
+            ...prevState,
+            isLoading: false,
+          }
       }
     },
     {
@@ -40,45 +59,88 @@ export default function Navigation({ navigation }) {
     }
   );
 
-  React.useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
-    const bootstrapAsync = async () => {
-      let userToken;
+  const _loadFont = async () =>{
+    await Font.loadAsync({
+      Layiji: require('../assets/fonts/Layiji.ttf'),
+      Priyati: require('../assets/fonts/Priyati-Regular.ttf'),
+    })
+    setLoadFontState(true)
+  }
 
-      try {
-        userToken = await AsyncStorage.getItem('userToken');
-      } catch (e) {
-        // Restoring token failed
+
+  const storeData = async (token) => {
+    try {
+      await AsyncStorage.setItem('@token', token)
+    } catch (e) {
+      console.log(e)
+    }
+    console.log('Store token done')
+
+  }
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@token')
+      if(value == null) {
+        console.log('Key : null')
+        dispatch({ type: 'RESTORING_TOKEN'});
       }
+      else{
+        console.log('Key : '+value.toString())
+        dispatch({ type: 'SUCESS_SININ'});
+        dispatch({ type: 'SIGN_IN', token: value });
+      }
+    } catch(e) {
+      console.log(e)
+    }
+    console.log('Get token done')
+  }
 
-      // After restoring token, we may need to validate it in production apps
+  const removeValue = async () => {
+    try {
+      await AsyncStorage.removeItem('@token')
+    } catch(e) {
+      console.log(e)
+    }
+  
+    console.log('Remove token done')
+  }
 
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
-    };
-
-    bootstrapAsync();
-  }, []);
-
-  const authContext = React.useMemo(
+  const authContext = useMemo(
     () => ({
-      signIn: async data => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+      signIn: async (data) => {
+        dispatch({ type: 'STILL_SININ'})
+        var user = await Firebase.signIn(data)
+        dispatch({ type: 'SUCESS_SININ'})
+        console.log()
+        if (user == 404){ 
+          Alert.alert('ไม่พบผู้ใช้')
+        }
+        else{
+          var token = user.token
+          storeData(token)
+          dispatch({ type: 'SIGN_IN', token: token })
+          console.log()
+        }
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
-      signUp: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
+      signOut: () => { 
+        removeValue()
+        dispatch({ type: 'SIGN_OUT' })
+    },
 
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+      signUp: async (data) => {
+        dispatch({ type: 'STILL_SININ'})
+        var user = await Firebase.Register(data)
+        dispatch({ type: 'SUCESS_SININ'})
+        if (user == 101){
+          return 101
+        }
+        else if(user == 103){
+          return 103
+        }
+        else{
+          return true
+        }
       },
     }),
     []
@@ -86,38 +148,29 @@ export default function Navigation({ navigation }) {
 
   return (
     <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          {state.isLoading ? (
-            <Stack.Screen name="Splash" component={SplashScreen} />
-          ) : state.userToken == null ? (
-            <Stack.Screen
-              name="Auth"
-              component={AuthenticationStack}
-              options={{
-                headerShown: false,
-                animationTypeForReplace: state.isSignout ? 'pop' : 'push',
 
-              }}
-            />
+          {state.isLoading && LoadFontState ? (
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown: false,}} />
+            </Stack.Navigator>
+          </NavigationContainer>
+          ) : state.userToken == null ? (
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Auth"
+                component={AuthenticationStack}
+                options={{
+                  headerShown: false,
+                  animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
           ) : (
-            // User is signed in
-            <Stack.Screen name="Main" 
-                          component={MainNavigator} 
-                          options={{
-                            headerShown: false,
-                            headerStyle: {
-                              backgroundColor: 'rgba(0,122,255,0.7)',
-                            },
-                            headerTintColor: '#fff',
-                            headerTitleStyle:{
-                              fontWeight: 'bold',
-                            }
-                          }}
-            />
+            <MainNavigator/>
           )}
-        </Stack.Navigator>
-      </NavigationContainer>
     </AuthContext.Provider>
   );
 }

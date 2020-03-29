@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font'
 import { SplashScreen } from '../screens/SplashScreen'
 import { StyleSheet, Image, View, Text } from 'react-native'
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const PopUpFish = (props) => {
  
@@ -22,34 +22,36 @@ export const PopUpFish = (props) => {
     }
   
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {LoadFontState ? (
-                <View style={styles.titleContainer}>
+                <View style={styles.container}>
 
-                    <View>
+                    <View style={styles.titleContainer}>
                         <Text style={styles.textTitle}>{props.title}</Text>
+                    </View>
+                    <View style={styles.imageContainer}>
                         <Image
                             style={styles.image}
                             source={{uri: props.pic}}
                         /> 
                     </View>
 
-                    <View>
-                        <Text>
-                            {props.bio}
+                    <View style={styles.bioContainer}>
+                        <Text style={styles.textBio}>
+                            {'      '+props.bio}
                         </Text>
                     </View>
 
-                    <View>
-                        <Text>
-                            {props.eye}
+                    <View style={styles.eyeContainer}>
+                        <Text style={styles.texteye}>
+                            {'      '+props.eye}
                         </Text>
                     </View>
                 </View>
             ):(
                 <SplashScreen/>
             )}
-        </View>
+        </SafeAreaView>
     )
   }
 
@@ -60,8 +62,40 @@ const styles = StyleSheet.create({
     },
 
     titleContainer:{
+        flex:0.09,
         alignItems: 'center',
-        marginTop: 20
+        justifyContent: 'center',
+        //backgroundColor:'blue',
+
+    },
+
+    imageContainer:{
+        flex:0.25,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
+        //backgroundColor:'yellow',
+
+    },
+
+    bioContainer:{
+        flex:0.30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        //backgroundColor:'red',
+        paddingLeft:20,
+        paddingRight:20,
+
+    },
+
+    eyeContainer:{
+        flex:0.30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        //backgroundColor:'green',
+        paddingLeft:20,
+        paddingRight:20,
+
     },
 
     textTitle:{
@@ -74,5 +108,15 @@ const styles = StyleSheet.create({
         width: 300,
         height: 200,
         resizeMode: 'contain'
+    },
+
+    textBio:{
+        fontSize:20,
+        fontFamily:'Nithan',
+    },
+
+    texteye:{
+        fontSize:20,
+        fontFamily:'Nithan',
     }
 })

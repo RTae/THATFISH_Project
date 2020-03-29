@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
 
   textContainer:{
     flex:0.6,
+    alignItems:'center',
+    justifyContent: 'center',
+    height: 70,
   },
   text: {
     color : '#FFF',
@@ -61,10 +64,10 @@ const styles = StyleSheet.create({
     width: WIDTH - 80,
     height : 80,
     borderRadius: 25,
-    backgroundColor: '#1A1260',
+    backgroundColor: '#0094C6',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 30,
     marginBottom: 20,
     flexDirection:'row'
   },

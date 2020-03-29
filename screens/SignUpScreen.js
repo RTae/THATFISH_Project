@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font'
-import {StyleSheet, View, Text,  Dimensions, KeyboardAvoidingView, } from 'react-native'
+import {StyleSheet, View, Alert, Dimensions, KeyboardAvoidingView, } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { AuthContext } from "../components/context";
@@ -13,7 +13,7 @@ export const SignUpScreen = ({navigation}) => {
 
     const [Name, setName] = useState('');
     const [LoadFontState, setLoadFontState] = useState(false)
-    const { signIn } = React.useContext(AuthContext);
+    const { signUp } = React.useContext(AuthContext);
 
     useEffect(() =>{
         _loadFont()
@@ -26,8 +26,33 @@ export const SignUpScreen = ({navigation}) => {
       setLoadFontState(true)
     }
 
-    const onPressRegister = () => {
-        navigation.goBack()
+    const onPressRegister = async (Name) => {
+        if(Name == ''){
+            Alert.alert('กรุณาอย่าใส่ช่องว่าง')
+        }else{
+            var regexEng=/^[a-zA-Z]+$/
+            var regexThai=/^[ก-๏\s]+$/
+            if(Name.match(regexEng) || Name.match(regexThai)){
+                var log = await signUp(Name)
+                console.log(log)
+                if(log == true){
+                    Alert.alert('สมัครสมาชิกสำเร็จ')
+                    navigation.goBack()
+                }
+                else if(log == 101){
+                    Alert.alert('มีผู้ใช้ชื่อนี้แล้ว')
+                }
+    
+                else if(log == 103){
+                    Alert.alert('ERROR 103: User is not match the input')
+                }
+            }
+            else{
+                Alert.alert('ชื่อผู้ใช้ต้องเป็นตัวอักษรเท่านั้น')
+            }
+            
+        }
+        
     }
 
     return(
@@ -35,9 +60,6 @@ export const SignUpScreen = ({navigation}) => {
         {LoadFontState ? (
             <KeyboardAvoidingView behavior="padding" enabled>
                 <View style = {styles.container} >
-                        <View style = {styles.logoContainer}>
-                            <Text style = {styles.logoText}>THATFISH</Text>
-                        </View>
 
                         <View style = {styles.inputContainer}>
                             <TextInput 
@@ -57,7 +79,7 @@ export const SignUpScreen = ({navigation}) => {
 
                         <Button
                             title = {'ลงทะเบียน'}
-                            onPress = {() => onPressRegister()}
+                            onPress = {() => onPressRegister(Name)}
                         />
                 </View>
             </KeyboardAvoidingView>

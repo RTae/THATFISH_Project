@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import { LoginScreen } from '../screens/LoginScreen'
 import { SignUpScreen } from '../screens/SignUpScreen'
+import { Header } from '../components/Header'
 
 const AuthStack = createStackNavigator()
 
@@ -19,17 +20,7 @@ export const AuthenticationStack = () => {
       <AuthStack.Screen
         name='Register'
         component={SignUpScreen}
-        options={{
-          headerShown: true,
-          title: 'ลงทะเบียน',
-          headerStyle: {
-            backgroundColor: '#1A1260',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
+        options={Header('ลงทะเบียน')}
       />
     </AuthStack.Navigator>
   )

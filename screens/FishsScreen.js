@@ -1,68 +1,79 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { StyleSheet, View, ActivityIndicator, ScrollView } from 'react-native'
 import Modal from 'react-native-modal';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { FishButton } from '../components/ิFishButton'
-import { HeadFish } from '../components/HeaderFish'
 import { PopUpFish } from '../components/popUpFish'
- 
+import { Firebase } from '../components/Firebase'
 
 export const FishScreen = () => {
 
-  const [FetchState, setFetchState] = useState(false)
-  const [PopupState, setPopupState] = useState(false)
-  const [DataObjs, setDataObjs] = useState(null)
-  const [DataDicts, setDataDicts] = useState(null)
-  const [TitlePopup, setTitlePopup] = useState(null)
-  const [PicPopup, setPicPopup] = useState(null)
-  const [BioPopup, setBioPopup] = useState(null)
-  const [EyePopup, setEyePopup] = useState(null)
-  const [SizePopup, setSizePopup] = useState(null)
+  const [state, dispatch] = useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case 'FETCH_DONE':
+          return {
+            ...prevState,
+            DataObjs: action.Objs,
+            DataDicts: action.Dicts,
+            FetchState: action.FetchState,
+          }
+        case 'PATCH_DATA':
+          return {
+            ...prevState,
+            TitlePopup: action.title,
+            PicPopup: action.pic,
+            BioPopup: action.bio,
+            EyePopup: action.eye,
+            SizePopup: action.size,
+          }
+        case 'POPUP':
+          return {
+            ...prevState,
+            PopupState: action.state,
+          }
+      }
+    },
+    {
+      FetchState: false,
+      PopupState: false,
+      DataObjs: null,
+      DataDicts: null,
+      TitlePopup: null,
+      PicPopup: null,
+      BioPopup: null,
+      EyePopup: null,
+      SizePopup: null,
+    }
+  );
 
   useEffect(() =>{
-    _getFishDatas()
+    getFishDatas()
   },[])
 
-  const _getFishDatas = async () => {
-    return await fetch('https://thatfish.herokuapp.com/fishs')
-    .then((response) => response.json())
-    .then((responseJson) => {
-      var datas = []
-      for(var key in responseJson){
-        var item = responseJson[key]
-        item.id = key
-        datas.push(responseJson[key])
-       }
-       setDataObjs(datas)
-       setDataDicts(responseJson)
-       setFetchState(true)
-    })
-    .catch((error) =>{
-      console.error(error);
-    });
+  const getFishDatas = async() => {
+    var log = await Firebase.getFishDatas()
+    var dataObjs = log[0]
+    var dataDicts = log[1]
+    dispatch({ type: 'FETCH_DONE', Objs:dataObjs, Dicts:dataDicts, FetchState:!state.FetchState })
   }
 
   const _popUp = (id) => {
-    var data = DataDicts[id]
-    if(PopupState != true){
-
-      setPicPopup(data['pic'])
-      setTitlePopup(data['name'])
-      setBioPopup(data['bio'])
-      setEyePopup(data['idetity'])
-      setPopupState(!PopupState)
+    var data = state.DataDicts[id]
+    if(state.PopupState != true){
+      dispatch({ type: 'PATCH_DATA', title:data['name'], pic:data['pic'], bio:data['bio'] ,eye:data['idetity'], size:data['size'] })
+      dispatch({ type: 'POPUP', state:!state.PopupState})
 
     }
     else{
-      setPopupState(!PopupState)
-
+      dispatch({ type: 'POPUP', state:!state.PopupState})
     }
     
   }
-  if(FetchState){
-    var data = DataObjs
+  if(state.FetchState){
+    var data = state.DataObjs
     return (
-      <View style={styles.container}>
-        <HeadFish title = {'ประวัติและวิธีการเลี้ยง'} />
+      <SafeAreaView style={styles.container}>
         <ScrollView style={styles.ScorllListView}>
           {
             data.map((item, index) => (
@@ -77,28 +88,27 @@ export const FishScreen = () => {
           }
         </ScrollView> 
         <View>  
-        <Modal isVisible={PopupState}
+        <Modal isVisible={state.PopupState}
               onSwipeComplete = {() => _popUp()} 
               swipeDirection="left">
               <PopUpFish
-                title = {TitlePopup}
-                pic = {PicPopup}
-                bio = {BioPopup}
-                eye = {EyePopup}
+                title = {state.TitlePopup}
+                pic = {state.PicPopup}
+                bio = {state.BioPopup}
+                eye = {state.EyePopup}
               />
         </Modal>
         </View> 
-      </View>
+      </SafeAreaView>
     );
   }
   else{
     return(
-      <View style={styles.container}>
-        <HeadFish title = {'ประวัติและวิธีการเลี้ยง'} />
+      <SafeAreaView style={styles.container}>
         <View style={styles.containerLoadingIndicator} >
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
-      </View>
+      </SafeAreaView>
     )
   }
 }
@@ -117,23 +127,6 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
-  },
-  header: {
-    fontSize: 20,
-    color : '#FFF',
-    marginBottom: 10
-  },
-  logoContainer:{
-    alignItems: 'center',
-    marginTop: 5,
-    marginBottom: 10,
-  },
-  logoText: {
-    color: '#FFF',
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginTop: 10,
-    opacity: 0.8,
   },
   ScorllListView: {
     marginHorizontal: 40,

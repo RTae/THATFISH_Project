@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font'
-import {StyleSheet, View, Text, Image, Dimensions, KeyboardAvoidingView, } from 'react-native'
+import {StyleSheet, View, Text, Image, Dimensions, KeyboardAvoidingView, Alert } from 'react-native'
 import Logo from '../assets/images/icon.png'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { AuthContext } from "../components/context";
 import { Button } from '../components/Button';
 import { SplashScreen } from '../screens/SplashScreen'
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const {width : WIDTH} = Dimensions.get('window')
 
@@ -23,12 +25,19 @@ export const LoginScreen = ({navigation}) => {
     const _loadFont = async () =>{
       await Font.loadAsync({
         Layiji: require('../assets/fonts/Layiji.ttf'),
+        Priyati: require('../assets/fonts/Priyati-Regular.ttf'),
       })
       setLoadFontState(true)
+      console.log()
     }
 
     const onPressLogin = (Name) =>{
-        signIn(Name)
+        if(Name == ''){
+            Alert.alert('กรุณาอย่าใส่ช่องว่าง')
+        }
+        else{
+            signIn(Name)
+        }
     }
 
     const onPressSigup = () =>{
@@ -36,7 +45,7 @@ export const LoginScreen = ({navigation}) => {
     }
 
     return(
-        <View style = {styles.container}>
+        <SafeAreaView style = {styles.container}>
         {LoadFontState ? (
             <KeyboardAvoidingView behavior="padding" enabled>
                 <View style = {styles.container} >
@@ -63,7 +72,7 @@ export const LoginScreen = ({navigation}) => {
                         
                         <Button
                             title = {'เริ่ม'}
-                            onPress = {() => onPressLogin()}
+                            onPress = {() => onPressLogin(Name)}
                         />
 
                         <Button
@@ -81,7 +90,7 @@ export const LoginScreen = ({navigation}) => {
         ):(
             <SplashScreen/>
         )}
-        </View>
+        </SafeAreaView>
     )
 }
 

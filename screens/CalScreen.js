@@ -1,17 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { StyleSheet, View, ActivityIndicator, ScrollView } from 'react-native'
 import * as Font from 'expo-font'
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { FishButton } from '../components/ิFishButton'
-import { HeadFish } from '../components/HeaderFish'
- 
+import { Firebase } from '../components/Firebase'
+
 
 export const PreCal = ({ navigation }) => {
 
-  const [FetchState, setFetchState] = useState(false)
-  const [DataSource, setDataSource] = useState(null)
+  const [state, dispatch] = useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case 'FETCH_DONE':
+          return {
+            ...prevState,
+            DataObjs: action.Objs,
+            DataDicts: action.Dicts,
+            FetchState: action.FetchState,
+          }
+      }
+    },
+    {
+      FetchState: false,
+      DataObjs: null,
+      DataDicts: null,
+    }
+  );
 
   useEffect(() =>{
-    _getFishDatas()
+    getFishDatas()
     _loadFont()
   },[])
 
@@ -21,57 +38,44 @@ export const PreCal = ({ navigation }) => {
     })
   }
 
-  const _getFishDatas = async () => {
-    return await fetch('https://thatfish.herokuapp.com/fishs')
-    .then((response) => response.json())
-    .then((responseJson) => {
-      var datas = []
-      for(var key in responseJson){
-        var item = responseJson[key]
-        item.id = key
-        datas.push(responseJson[key])
-      }
-      setDataSource(datas)
-      setFetchState(true)
-    })
-    .catch((error) =>{
-      console.error(error);
-    });
+  const getFishDatas = async() => {
+    var log = await Firebase.getFishDatas()
+    var dataObjs = log[0]
+    var dataDicts = log[1]
+    dispatch({ type: 'FETCH_DONE', Objs:dataObjs, Dicts:dataDicts, FetchState:!state.FetchState })
   }
 
-  const _popUp = (id) => {
+  const onPressFishButton = (id) => {
     navigation.navigate("Calulate")
   }
 
-    if(FetchState){
-      var data = DataSource
+    if(state.FetchState){
+      var data = state.DataObjs
       return (
-        <View style={styles.container}>
-          <HeadFish title = {'คำนวณปริมาณอาหาร'} />
+        <SafeAreaView style={styles.container}>
           <ScrollView style={styles.ScorllListView}>
             {
               data.map((item, index) => (
                 <React.Fragment key = {item.id}>
                   <FishButton
                     title = {item.name}
-                    onPress = {() => _popUp(item.id)}
+                    onPress = {() => onPressFishButton(item.id)}
                     pic = {item.pic}
                   />
                 </React.Fragment>
               ))
             }
           </ScrollView> 
-        </View>
+        </SafeAreaView>
       );
     }
     else{
       return(
-        <View style={styles.container}>
-          <HeadFish title = {'คำนวณปริมาณอาหาร'} />
+        <SafeAreaView style={styles.container}>
           <View style={styles.containerLoadingIndicator} >
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
-        </View>
+        </SafeAreaView>
       )
     }
 }
