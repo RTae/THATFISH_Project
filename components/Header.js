@@ -12,6 +12,7 @@ export const Header = (title) => {
         headerTitleStyle: {
             fontSize : 40,
             fontFamily:'Priyati',
+            textAlign: 'center',
         },
     })
 }

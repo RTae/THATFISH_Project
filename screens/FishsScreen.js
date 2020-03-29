@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FishButton } from '../components/ิFishButton'
 import { PopUpFish } from '../components/popUpFish'
 import { Firebase } from '../components/Firebase'
+import { Button } from '../components/Button'
 
 export const FishScreen = () => {
 
@@ -88,15 +89,16 @@ export const FishScreen = () => {
           }
         </ScrollView> 
         <View>  
-        <Modal isVisible={state.PopupState}
-              onSwipeComplete = {() => _popUp()} 
-              swipeDirection="left">
+        <Modal isVisible={state.PopupState}>
               <PopUpFish
                 title = {state.TitlePopup}
                 pic = {state.PicPopup}
                 bio = {state.BioPopup}
                 eye = {state.EyePopup}
               />
+              <Button 
+                  title = 'ปิด'
+                  onPress = {() => _popUp()}/>
         </Modal>
         </View> 
       </SafeAreaView>

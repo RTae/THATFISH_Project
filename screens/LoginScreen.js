@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
 
     detailContainer:{
         alignItems: 'center',
-        marginTop: 160,
+        marginTop: 130,
     },
 
     logo : {
