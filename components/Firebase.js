@@ -57,5 +57,29 @@ export const Firebase = ({
            }
 
         return [datas,responseJson]
-    }
+    },
+
+    calutlate: async (name,nameFeed,age,quantity,token) => {
+        var reasponse = await fetch(api+'calFish?name='+name+'&age='+age+'&quantity='+quantity+'&token='+token+'&nameFeed='+nameFeed)
+
+        return  reasponse
+    },
+
+    getFishFeed: async (token) => {
+        var reasponse = await fetch(api+'getFeedFish?token='+token)
+        var responseJson = await reasponse.json()
+        var isEmpty = JSON.stringify(responseJson) == '{}'
+        if(!isEmpty){
+            var datas = []
+            for(var key in responseJson){
+                var item = responseJson[key]
+                item.id = key
+                datas.push(responseJson[key])
+            }
+
+            return [datas,responseJson]
+        }else{
+            return null
+        }
+    },
 })

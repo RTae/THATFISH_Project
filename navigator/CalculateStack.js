@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import { PreCal } from '../screens/CalScreen'
-import { Calulate } from '../screens/CallCalScreen'
+import { CalulateScreen } from '../screens/CallCalScreen'
 import { Header } from '../components/Header'
 
 
@@ -20,7 +20,7 @@ export const CalculateStack = () => {
 
       <CalStack.Screen
         name='Calulate'
-        component={Calulate}
+        component={CalulateScreen}
         options={headerCal}
       />
     </CalStack.Navigator>

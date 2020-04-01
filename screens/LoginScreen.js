@@ -19,17 +19,18 @@ export const LoginScreen = ({navigation}) => {
     const { signIn } = React.useContext(AuthContext);
 
     useEffect(() =>{
-        _loadFont()
+        let mounted = true;
+        Font.loadAsync({
+            iannnnnVCD: require('../assets/fonts/iannnnnVCD.ttf'),
+            Layiji: require('../assets/fonts/Layiji.ttf'),
+            Priyati: require('../assets/fonts/Priyati-Regular.ttf'),
+        }).then(() => {
+            if(mounted){
+                setLoadFontState(true)
+            }
+        })
+        return () => mounted = false;
     },[])
-
-    const _loadFont = async () =>{
-      await Font.loadAsync({
-        Layiji: require('../assets/fonts/Layiji.ttf'),
-        Priyati: require('../assets/fonts/Priyati-Regular.ttf'),
-      })
-      setLoadFontState(true)
-      console.log()
-    }
 
     const onPressLogin = (Name) =>{
         if(Name == ''){
@@ -127,13 +128,13 @@ const styles = StyleSheet.create({
         width: WIDTH - 55,
         height : 50,
         borderRadius: 25,
-        fontSize: 25,
+        fontSize: 35,
         alignItems:"center",
         paddingLeft: 45,
         backgroundColor: 'rgba(0,122,255,0.7)',
         color: 'rgba(255,255,255,0.7)',
         marginHorizontal: 25,
-        fontFamily:'Layiji',
+        fontFamily:'iannnnnVCD',
 
     },
     inputIcon: {

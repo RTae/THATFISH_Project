@@ -16,11 +16,14 @@ export const HomeStackScreen = () => {
 
   const _loadFont = async () =>{
     await Font.loadAsync({
+      iannnnnVCD: require('../assets/fonts/iannnnnVCD.ttf'),
       Layiji: require('../assets/fonts/Layiji.ttf'),
-      Priyati: require('../assets/fonts/Priyati-Regular.ttf'),
+      Khianlen :  require('../assets/fonts/Khianlen.ttf'),
+    }).then(()=>{
+      setLoadFontState(true)
     })
-    setLoadFontState(true)
   }
+
 
   return (
     <HomeStack.Navigator>
@@ -32,8 +35,8 @@ export const HomeStackScreen = () => {
       />
       ):(
         <HomeStack.Screen
-          name='Loading'
-          component={SplashScreen}
+        name='Home'
+        component={HomeScreen}
         />
       )}
     </HomeStack.Navigator>

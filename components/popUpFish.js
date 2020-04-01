@@ -4,11 +4,16 @@ import { Sheet } from './Sheet'
 import { SplashScreen } from '../screens/SplashScreen'
 import { StyleSheet, Image, View, Text, ScrollView, Platform} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { TextButton } from './TextButton'
+
 
 export const PopUpFish = (props) => {
  
     const { title, pic, bio, eye }  = props
     const [LoadFontState, setLoadFontState] = useState(false)
+    const [showBio, setshowBio] = useState(false)
+    const [showEye, setshowEye] = useState(false)
+    const [showTable, setshowTable] = useState(false)
 
     useEffect(() =>{
         _loadFont()
@@ -17,7 +22,8 @@ export const PopUpFish = (props) => {
     const _loadFont = async () =>{
         await Font.loadAsync({
           Priyati: require('../assets/fonts/Priyati-Regular.ttf'),
-          Nithan: require('../assets/fonts/Nithan.ttf')
+          Nithan: require('../assets/fonts/Nithan.ttf'),
+          iannnnnVCD: require('../assets/fonts/iannnnnVCD.ttf'),
         })
         setLoadFontState(true)
     }
@@ -32,7 +38,7 @@ export const PopUpFish = (props) => {
                         </View>
                         <View style={[styles.imageContainer, Platform.OS === 'ios' ? (
                             {
-                                shadowColor: "#000",
+                            shadowColor: "#000",
                             shadowOffset: {
                                 width: 0,
                                 height: 4,
@@ -51,38 +57,55 @@ export const PopUpFish = (props) => {
 
                         <View style={styles.bioContainer}>
                             <View style={styles.headerContainer}>
-                                <Text style={styles.textHeader}>
-                                    ประวัติความเป็นมา
-                                </Text>
+                                <TextButton
+                                    width = {70}
+                                    title = 'ประวัติ'
+                                    onPress = {() => setshowBio(!showBio)}
+                                />
                             </View>
                             <View style={styles.infoContainer}>
+                                {showBio ? (
                                 <Text style={styles.textInfo}>
                                     {'      '+props.bio}
-                                </Text>
+                                </Text> 
+                                ):(
+                                    <View/>
+                                )}
                             </View>
                         </View>
 
                         <View style={styles.eyeContainer}>
                             
                             <View style={styles.headerContainer}>
-                                <Text style={styles.textHeader}>
-                                    ลักษณะของปลา
-                                </Text>
+                                <TextButton
+                                    width = {150}
+                                    title = 'ลักษณะของปลา'
+                                    onPress = {() => setshowEye(!showEye)}
+                                />
                             </View>
                             <View style={styles.infoContainer}>
+                                {showEye ? (
                                 <Text style={styles.textInfo}>
                                     {'      '+props.eye}
                                 </Text>
+                                ):(
+                                    <View/>
+                                )}
                             </View>
                         </View>
                         <View style={styles.sheetContainer}>
-                            
                             <View style={styles.headerContainer}>
-                                <Text style={styles.textHeader}>
-                                    การให้อาหาร
-                                </Text>
+                                <TextButton
+                                    width = {190}
+                                    title = 'ตารางการให้อาหาร'
+                                    onPress = {() => setshowTable(!showTable)}
+                                />
                             </View>
-                            <Sheet name = {props.title}/>
+                            {showTable ? (
+                                <Sheet name = {props.title}/>
+                            ):(
+                                <View/>
+                            )}
                         </View>
                 </ScrollView>
             ):(
@@ -133,9 +156,7 @@ const styles = StyleSheet.create({
 
     headerContainer:{
         //backgroundColor:'red',
-        paddingLeft:30,
-        marginTop:20,
-        marginBottom:5,
+        paddingLeft:27,
     },
 
     infoContainer:{
@@ -147,13 +168,18 @@ const styles = StyleSheet.create({
     },
 
     textHeader:{
-        fontSize:30,
+        fontSize:40,
+        fontFamily:'iannnnnVCD',
+    },
+
+    textInfo:{
+        fontSize:23,
         fontFamily:'Nithan',
     },
 
     textTitle:{
-        fontSize:70,
-        fontFamily:'Nithan',
+        fontSize:100,
+        fontFamily:'iannnnnVCD',
     },
 
     image:{
@@ -161,10 +187,5 @@ const styles = StyleSheet.create({
         height: 200,
         resizeMode: 'contain',
 
-    },
-
-    textInfo:{
-        fontSize:20,
-        fontFamily:'Nithan',
     },
 })

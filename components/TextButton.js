@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, StyleSheet, Text, Dimensions, Image, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons'
 import * as Font from 'expo-font'
 
-const {width : WIDTH} = Dimensions.get('window')
-
-export const Button = (props) => {
+export const TextButton = (props) => {
  
-  const { title = 'Enter', onPress }  = props
+  const { title = 'Enter', onPress, width, logo = 'caret-square-down', Color = 'black' }  = props
   const [LoadFontState, setLoadFontState] = useState(false)
 
   useEffect(() =>{
@@ -23,12 +22,17 @@ export const Button = (props) => {
 
   if(LoadFontState){
     return (
-      <TouchableOpacity style = {styles.btnLogin}
+      <TouchableOpacity style = {[styles.btnLogin, { width: props.width}]}
                         onPress = {onPress}>
           <View style = {styles.textContainer}>
-            <Text style = {[styles.text, {fontFamily: 'iannnnnVCD'}]}>
+            <Text style = {[styles.text, {fontFamily: 'iannnnnVCD', color :  Color}]}>
               {props.title}
             </Text>
+
+            <FontAwesome5 name = {logo}
+                          size = {20} 
+                          color = {Color}
+                          style = {styles.inputIcon}/>
           </View>
       </TouchableOpacity>
     )
@@ -38,9 +42,14 @@ export const Button = (props) => {
       <TouchableOpacity style = {styles.btnLogin}
                         onPress = {onPress}>
           <View style = {styles.textContainer}>
-            <Text style = {styles.text}>
+            <Text style = {[styles.text , {color :  Color}]}>
               {props.title}
             </Text>
+            <View style = {styles.inputIcon}>
+            <FontAwesome5 name = 'caret-square-down'
+                          size = {20} 
+                          color = {Color}/>
+            </View>
           </View>
       </TouchableOpacity>
     )
@@ -50,19 +59,20 @@ export const Button = (props) => {
 const styles = StyleSheet.create({
 
   textContainer:{
-    flex:0.6,
+    flex:1,
+    flexDirection:'row',
   },
   text: {
-    color : '#FFF',
     fontSize: 40,
     textAlign: 'center'
   },
   btnLogin: {
-    width: WIDTH - 60,
-    height : 50,
-    borderRadius: 25,
-    backgroundColor: '#1A1260',
-    justifyContent: 'center',
+    height : 47,
     marginTop: 25,
-},
+  },
+
+  inputIcon: {
+      marginTop:10,
+      marginLeft:5,
+  },
 });

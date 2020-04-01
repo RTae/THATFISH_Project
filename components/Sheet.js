@@ -76,6 +76,7 @@ export const Sheet = (props) => {
       flex: 1,
       paddingLeft: 16,
       paddingRight:16,
+      paddingBottom:10,
       backgroundColor: '#fff' 
     },
 
@@ -85,14 +86,14 @@ export const Sheet = (props) => {
     },
 
     textHeader: {
-      fontSize: 20,
+      fontSize: 25,
       color: '#fff',
       textAlign: 'center', 
       fontFamily: 'Nithan'
     },
 
     text: {
-      fontSize: 20,
+      fontSize: 25,
       textAlign: 'center', 
       fontFamily: 'Nithan'
     },

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import * as Font from 'expo-font'
 
 export const Header = (title) => {
 
@@ -10,8 +11,8 @@ export const Header = (title) => {
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
-            fontSize : 40,
-            fontFamily:'Priyati',
+            fontSize : 50,
+            fontFamily:'iannnnnVCD',
             textAlign: 'center',
         },
     })

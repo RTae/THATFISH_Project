@@ -16,8 +16,8 @@ export default function Navigation({ navigation }) {
   const [LoadFontState, setLoadFontState] = useState(false)
 
   useEffect( () => {
-    getData()
     _loadFont()
+    getData()
   }, [])
 
   const [state, dispatch] = useReducer(
@@ -62,19 +62,22 @@ export default function Navigation({ navigation }) {
   const _loadFont = async () =>{
     await Font.loadAsync({
       Layiji: require('../assets/fonts/Layiji.ttf'),
+      iannnnnVCD: require('../assets/fonts/iannnnnVCD.ttf'),
       Priyati: require('../assets/fonts/Priyati-Regular.ttf'),
+    }).then(() => {
+      setLoadFontState(true)
     })
-    setLoadFontState(true)
   }
 
 
-  const storeData = async (token) => {
+  const storeData = async (token,name) => {
     try {
       await AsyncStorage.setItem('@token', token)
+      await AsyncStorage.setItem('@name', name)
     } catch (e) {
       console.log(e)
     }
-    console.log('Store token done')
+    console.log('Store token and name done')
 
   }
 
@@ -118,7 +121,8 @@ export default function Navigation({ navigation }) {
         }
         else{
           var token = user.token
-          storeData(token)
+          var name = user.name
+          storeData(token,name)
           dispatch({ type: 'SIGN_IN', token: token })
           console.log()
         }
@@ -126,7 +130,7 @@ export default function Navigation({ navigation }) {
       signOut: () => { 
         removeValue()
         dispatch({ type: 'SIGN_OUT' })
-    },
+      },
 
       signUp: async (data) => {
         dispatch({ type: 'STILL_SININ'})

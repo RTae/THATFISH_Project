@@ -45,8 +45,8 @@ export const PreCal = ({ navigation }) => {
     dispatch({ type: 'FETCH_DONE', Objs:dataObjs, Dicts:dataDicts, FetchState:!state.FetchState })
   }
 
-  const onPressFishButton = (id) => {
-    navigation.navigate("Calulate")
+  const onPressFishButton = (name,pic) => {
+    navigation.navigate("Calulate",{nameFish:name,pic:pic})
   }
 
     if(state.FetchState){
@@ -59,7 +59,7 @@ export const PreCal = ({ navigation }) => {
                 <React.Fragment key = {item.id}>
                   <FishButton
                     title = {item.name}
-                    onPress = {() => onPressFishButton(item.id)}
+                    onPress = {() => onPressFishButton(item.name,item.pic)}
                     pic = {item.pic}
                   />
                 </React.Fragment>
