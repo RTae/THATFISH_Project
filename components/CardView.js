@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Card } from 'react-native-elements'
 import * as Font from 'expo-font'
-import { StyleSheet, Text, Dimensions} from 'react-native';
+import { StyleSheet, Text, Dimensions, Alert} from 'react-native';
 import { ProgressBar, Colors } from 'react-native-paper';
 import { TextButton } from './TextButton'
+import { FunctionContext } from '../components/context'
+import { Firebase } from './Firebase'
+
 
 
 const {width : WIDTH} = Dimensions.get('window')
 
 export const CardFeedView = (props) =>{
 
-  const { name, nameFeed, percent, day, quantity, food} = props
+  const { refresh } = React.useContext(FunctionContext);
+  const { name, nameFeed, percent, day, quantity, food, id, token} = props
   const [LoadFontState, setLoadFontState] = useState(false)
 
 
@@ -27,6 +31,23 @@ export const CardFeedView = (props) =>{
       setLoadFontState(true)
     })
   }
+
+const onPressDel = (token,id) => {
+  Alert.alert(
+    'คุณแน่ใจนะว่าต้องการลบบ่อเลี้ยงอันนี้',
+    '',
+    [
+    {text: 'ใช่', onPress: async () => {
+      console.log('Yes')
+      var log = await Firebase.delFishFeed(token,id)     
+      console.log(log)     
+      refresh()
+      }
+    },
+    {text: 'ไม่', onPress: () => console.log('No')},
+    ]
+  )
+}
 
   return (
           <Card containerStyle = {styles.card}>
@@ -50,6 +71,7 @@ export const CardFeedView = (props) =>{
                 Color = 'red'
                 title = 'ลบ'
                 logo = 'times'
+                onPress = {() => onPressDel(props.token,props.id)}
               />
           </Card>
     )

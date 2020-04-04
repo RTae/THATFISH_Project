@@ -17,12 +17,13 @@ export const Firebase = ({
     },
 
     Register: async (data) => {
-        var log = await Firebase.signIn(data)
+        console.log(data.name)
+        var log = await Firebase.signIn(data.name)
         if (log == 404) {
-            response  = await fetch(api+'addUser?name='+data)
+            var response  = await fetch(api+'addUser?name='+data.name+'&token='+data.token)
             var responseJson = await response.json()
             var name = responseJson.name
-            if(name == data){
+            if(name == data.name){
                 return true
             }
             else{
@@ -82,4 +83,11 @@ export const Firebase = ({
             return null
         }
     },
+
+    delFishFeed: async (token,id) => {
+        var reasponse = await fetch(api+'delFeedFish?token='+token+'&id='+id)
+        var responseJson = await reasponse.json()
+
+        return 
+    }
 })

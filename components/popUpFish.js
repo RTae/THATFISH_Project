@@ -58,7 +58,7 @@ export const PopUpFish = (props) => {
                         <View style={styles.bioContainer}>
                             <View style={styles.headerContainer}>
                                 <TextButton
-                                    width = {70}
+                                    width = {80}
                                     title = 'ประวัติ'
                                     onPress = {() => setshowBio(!showBio)}
                                 />
@@ -78,7 +78,7 @@ export const PopUpFish = (props) => {
                             
                             <View style={styles.headerContainer}>
                                 <TextButton
-                                    width = {150}
+                                    width = {190}
                                     title = 'ลักษณะของปลา'
                                     onPress = {() => setshowEye(!showEye)}
                                 />
@@ -96,7 +96,7 @@ export const PopUpFish = (props) => {
                         <View style={styles.sheetContainer}>
                             <View style={styles.headerContainer}>
                                 <TextButton
-                                    width = {190}
+                                    width = {220}
                                     title = 'ตารางการให้อาหาร'
                                     onPress = {() => setshowTable(!showTable)}
                                 />

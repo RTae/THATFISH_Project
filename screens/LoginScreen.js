@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font'
-import {StyleSheet, View, Text, Image, Dimensions, KeyboardAvoidingView, Alert } from 'react-native'
+import {StyleSheet, View, Text, Image, Dimensions, Alert } from 'react-native'
 import Logo from '../assets/images/icon.png'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { AuthContext } from "../components/context";
 import { Button } from '../components/Button';
-import { SplashScreen } from '../screens/SplashScreen'
+import { SplashScreen } from './SplashScreen'
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -48,7 +48,6 @@ export const LoginScreen = ({navigation}) => {
     return(
         <SafeAreaView style = {styles.container}>
         {LoadFontState ? (
-            <KeyboardAvoidingView behavior="padding" enabled>
                 <View style = {styles.container} >
                         <View style = {styles.logoContainer}>
                             <Image source = {Logo} style = {styles.logo}/>
@@ -87,7 +86,6 @@ export const LoginScreen = ({navigation}) => {
                         </View>
 
                 </View>
-            </KeyboardAvoidingView>
         ):(
             <SplashScreen/>
         )}

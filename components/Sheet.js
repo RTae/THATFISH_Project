@@ -11,7 +11,7 @@ export const Sheet = (props) => {
     const { name }  = props
     const [TableHead, setTableHead] = useState(null)
     const [tableData, settableData] = useState(null)
-    const widthArr = [WIDTH - 300, WIDTH - 250, WIDTH - 120, WIDTH - 230]
+    const widthArr = [WIDTH - WIDTH/2, WIDTH - WIDTH/2, WIDTH - WIDTH/5, WIDTH - WIDTH/2]
     const [LoadingState, setLoadingState] = useState(false)
 
     useEffect(() =>{

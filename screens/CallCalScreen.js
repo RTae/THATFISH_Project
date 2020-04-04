@@ -28,11 +28,12 @@ export const CalulateScreen = ({navigation,route}) => {
       var regexThai=/^[ก-๏\s]+$/
       if(nameFeed == '' || age == '' || quantity == ''){
         Alert.alert('กรุณาอย่าใส่ช่องว่าง')
+        setFetchState(true)
       }else{
         if(quantity.match(regexEng) || quantity.match(regexThai) || age.match(regexEng) || age.match(regexThai)){
           Alert.alert('กรุณาอย่าใช้ตัวอักษรแทนจำนวนและอายุของปลา')
+          setFetchState(true)
         }else{
-          setFetchState(false)
           var log = await Firebase.calutlate(name,nameFeed,age,quantity,token)
           console.log(JSON.stringify(log))
           setFetchState(true)
@@ -163,25 +164,21 @@ const styles = StyleSheet.create({
     },
     
     imageContainer:{
-      marginTop:30,
-      flex:0.4,
       //backgroundColor:'yellow',
     },
 
     titleContainer:{
-      flex:0.15,
       //backgroundColor:'blue',
 
     },
 
     inputContainer: {
-      flex:0.4,
       //backgroundColor:'grey',
     },
 
     buttonContainer:{
-      flex:0.5,
       //backgroundColor:'red',
+      marginBottom:30,
     },
 
     button:{

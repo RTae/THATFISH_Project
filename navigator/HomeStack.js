@@ -3,7 +3,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { HomeScreen } from '../screens/HomeScreen'
 import { Header } from '../components/Header'
 import * as Font from 'expo-font'
-import { SplashScreen } from '../screens/SplashScreen'
 
 const HomeStack = createStackNavigator()
 

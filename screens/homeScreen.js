@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useReducer} from "react";
+import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { Card } from 'react-native-elements'
 import * as Font from 'expo-font'
+import { Notifications } from 'expo';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, Text, View, AsyncStorage,ScrollView,Dimensions} from 'react-native';
-import { AuthContext } from '../components/context'
+import { StyleSheet, Text, View, AsyncStorage ,ScrollView,Dimensions} from 'react-native';
+import { AuthContext, FunctionContext}  from '../components/context'
+import { ResgiterPushNotification } from '../components/Module/registerForPushNotificationsAsync'
 import { Button } from '../components/Button'
 import { CardFeedView } from '../components/CardView'
 import { Firebase } from '../components/Firebase'
@@ -15,6 +17,7 @@ export const HomeScreen = () =>{
   
   const { signOut } = React.useContext(AuthContext);
   const [Name, SetName] = useState('')
+  const [Notification, SetNotification] = useState('')
   const [Token, SetToken] = useState('')
 
   const [state, dispatch] = useReducer(
@@ -43,10 +46,25 @@ export const HomeScreen = () =>{
   );
 
   useEffect(() =>{
+    ResgiterPushNotification
     _loadFont()
+    _notificationSubscription = Notifications.addListener(_handleNotification)
     getData()
     getFeedData()
   },[])
+
+  const _loadFont = async () =>{
+    await Font.loadAsync({
+      Layiji: require('../assets/fonts/Layiji.ttf'),
+      iannnnnVCD: require('../assets/fonts/iannnnnVCD.ttf'),
+      Khianlen :  require('../assets/fonts/Khianlen.ttf'),
+    })
+  } 
+
+  const _handleNotification = (notification) => {
+    console.log(notification);
+    SetNotification(notification)
+  };
 
   const getData = async () => {
     try {
@@ -66,81 +84,66 @@ export const HomeScreen = () =>{
     console.log('Get Name done')
   }
 
-  const _loadFont = async () =>{
-    await Font.loadAsync({
-      Layiji: require('../assets/fonts/Layiji.ttf'),
-      iannnnnVCD: require('../assets/fonts/iannnnnVCD.ttf'),
-      Khianlen :  require('../assets/fonts/Khianlen.ttf'),
-    })
-  }
-
   const getFeedData = async () => {
     const token = await AsyncStorage.getItem('@token')
     var log = await Firebase.getFishFeed(token)
     if(log != null){
       var dataObjs = log[0]
       var dataDicts = log[1]
-      dispatch({ type: 'FETCH_DONE', Objs:dataObjs, Dicts:dataDicts, FetchState:!state.FetchState })
+      dispatch({ type: 'FETCH_DONE', Objs:dataObjs, Dicts:dataDicts, FetchState:true })
     }
     else{
-      dispatch({ type: 'FETCH_DONE', Objs:null, Dicts:null, FetchState:!state.FetchState })
+      dispatch({ type: 'FETCH_DONE', Objs:null, Dicts:null, FetchState:true })
     }
   }
 
-  const onPressRefresh = async () =>{
-    dispatch({ type: 'REFRESH', FetchState:false })
-    const tokenValue = await AsyncStorage.getItem('@token')
-    var log = await Firebase.getFishFeed(tokenValue)
-    if(log != null){
-      var dataObjs = log[0]
-      var dataDicts = log[1]
-      dispatch({ type: 'FETCH_DONE', Objs:dataObjs, Dicts:dataDicts, FetchState: true })
-    }
-    else{
-      dispatch({ type: 'FETCH_DONE', Objs:null, Dicts:null, FetchState:!state.FetchState })
-    }
+  const onPressRefresh = () =>{
+    ModuleContext.refresh()
   }
 
   const onPressSigOut = () => {
     signOut()
   }
 
-  const HeaderTitle = () => {
-    return (
-      <View>
-      <Card containerStyle = {styles.card}>
-        <Text style = {styles.logoText}>
-          ยินดีต้อนรับสู่ THAT FISH {Name}
-        </Text>
-        <Button
-          title = 'ออกจากระบบ'
-          onPress = {() => onPressSigOut()}
-          />
-      </Card>
-      <View style = {styles.containerHeader}>
-        <View style = {styles.containerTextList}>
-          <Text style = {styles.text}>
-              รายการ
-          </Text>
-        </View>
-        <View style = {styles.containerButtonRefec}>
-          <TextButton
-            title = 'รีเฟรช'
-            width = {100}
-            logo = {'sync'}
-            onPress = {()=>onPressRefresh()}
-          />
-        </View>
-      </View>
-      </View>
-    )
-  }
+  const ModuleContext = useMemo(
+    () => ({
+      refresh  : async () => {
+        dispatch({ type: 'REFRESH', FetchState:false })
+        getFeedData()
+      }
+    }),
+    []
+  );
 
   return (
+    <FunctionContext.Provider value={ModuleContext}>
       <SafeAreaView style = {styles.container} >
         {state.FetchState && state.DataObjs != null ? (
             <View style = {styles.containerDetail}>
-              <HeaderTitle/>
+              <Card containerStyle = {styles.card}>
+                <Text style = {styles.logoText}>
+                  ยินดีต้อนรับสู่ THAT FISH {Name}
+                </Text>
+                <Button
+                  title = 'ออกจากระบบ'
+                  onPress = {() => onPressSigOut()}
+                />
+              </Card>
+            <View style = {styles.containerHeader}>
+              <View style = {styles.containerTextList}>
+                <Text style = {styles.text}>
+                    รายการ
+                </Text>
+              </View>
+              <View style = {styles.containerButtonRefec}>
+                <TextButton
+                    title = 'รีเฟรช'
+                    width = {100}
+                    logo = {'sync'}
+                    onPress = {()=>onPressRefresh()}
+                />
+              </View>
+            </View>
               <ScrollView style = {styles.containerScrollView}>
               {
                 state.DataObjs.map((item, index) => (
@@ -152,6 +155,8 @@ export const HomeScreen = () =>{
                         day = {item.age}
                         quantity = {item.quantity}
                         food = {item.food}
+                        id = {item.id}
+                        token = {Token}
                       />
                       </React.Fragment>
                     ))
@@ -160,10 +165,34 @@ export const HomeScreen = () =>{
             </View>
         ):(          
         <View style = {styles.containerDetail}>
-            <HeaderTitle/>
+          <Card containerStyle = {styles.card}>
+            <Text style = {styles.logoText}>
+                ยินดีต้อนรับสู่ THAT FISH {Name}
+            </Text>
+            <Button
+                title = 'ออกจากระบบ'
+                onPress = {() => onPressSigOut()}
+            />
+          </Card>
+          <View style = {styles.containerHeader}>
+            <View style = {styles.containerTextList}>
+              <Text style = {styles.text}>
+                  รายการ
+              </Text>
+            </View>
+            <View style = {styles.containerButtonRefec}>
+              <TextButton
+                  title = 'รีเฟรช'
+                  width = {100}
+                  logo = {'sync'}
+                  onPress = {()=>onPressRefresh()}
+              />
+            </View>
+          </View>
         </View>
         )}
       </SafeAreaView>
+    </FunctionContext.Provider>
     )
   }
 
@@ -180,7 +209,7 @@ export const HomeScreen = () =>{
     },
 
     containerScrollView: {
-      marginBottom:100,
+      marginBottom:150,
     },
 
     containerHeader: {
