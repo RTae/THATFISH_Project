@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity, StyleSheet, Text, Dimensions, Image, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, Dimensions, Image, View, ImageBackground } from 'react-native';
 import * as Font from 'expo-font'
 
 const {width : WIDTH} = Dimensions.get('window')
@@ -26,17 +26,17 @@ export const FishButton = (props) => {
     return (
       <TouchableOpacity style = {styles.btnLogin}
                         onPress = {onPress}>
-          <View style = {styles.picContainer}>
-            <Image
-                style={styles.image}
-                source={{uri: props.pic}}
-            />
-          </View>
-          <View style = {styles.textContainer}>
+        <ImageBackground source={require('../assets/images/Frame.png')} style={styles.Frame}>
+              <Image
+                  style={styles.image}
+                  source={{uri: props.pic}}
+              />
+          </ImageBackground>
+          <ImageBackground source={require('../assets/images/FrameText.png')} style={styles.TextFrame}>
             <Text style = {styles.textFont}>
               {props.title}
             </Text>
-          </View>
+          </ImageBackground>
       </TouchableOpacity>
     )
   }
@@ -44,17 +44,12 @@ export const FishButton = (props) => {
     return (
       <TouchableOpacity style = {styles.btnLogin}
                         onPress = {onPress}>
-          <View style = {styles.picContainer}>
-            <Image
-                style={styles.image}
-                source={{uri: props.pic}}
-            />
-          </View>
-          <View style = {styles.textContainer}>
-            <Text style = {styles.text}>
-              {props.title}
-            </Text>
-          </View>
+        <ImageBackground source={require('../assets/images/Frame.png')} style={styles.Frame}>
+              <Image
+                  style={styles.image}
+                  source={{uri: props.pic}}
+              />
+          </ImageBackground>
       </TouchableOpacity>
     )
   }
@@ -62,43 +57,52 @@ export const FishButton = (props) => {
 
 const styles = StyleSheet.create({
 
-  picContainer:{
-    flex:0.2,
-  },
-
   textContainer:{
-    flex:0.6,
+    flex:0.3,
     alignItems:'center',
     justifyContent: 'center',
     height: 70,
   },
   text: {
-    color : '#FFF',
-    fontSize: 30,
+    color : '#000',
+    fontSize: 20,
     textAlign: 'center',
   },
 
   textFont: {
-    color : '#FFF',
-    fontSize: 45,
+    color : '#000',
+    fontSize: WIDTH*0.07,
     textAlign: 'center',
     fontFamily:'iannnnnVCD'
   },
 
   image:{
-    width: 80,
-    height: 80,
+    marginTop:20,
+    width: 110,
+    height: 110,
     resizeMode: 'contain'
   },
+
+  TextFrame:{
+    marginTop:5,
+    width: WIDTH*0.49,
+    height:40,
+    alignItems:'center',
+    resizeMode: 'cover',
+  },
+
+  Frame:{
+    width:150,
+    height:150,
+    resizeMode: 'contain',
+    alignItems:'center',
+  },
+
   btnLogin: {
-    width: WIDTH - 80,
-    height : 80,
-    borderRadius: 25,
-    backgroundColor: '#0094C6',
+    height : 155,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 30,
-    marginBottom: 20,
-    flexDirection:'row'
+    marginBottom: 30,
   },
 });

@@ -3,7 +3,7 @@ import { Card } from 'react-native-elements'
 import * as Font from 'expo-font'
 import { Notifications } from 'expo';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, Text, View, AsyncStorage ,ScrollView,Dimensions} from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage ,FlatList, Dimensions} from 'react-native';
 import { AuthContext, FunctionContext}  from '../components/context'
 import { ResgiterPushNotification } from '../components/Module/registerForPushNotificationsAsync'
 import { Button } from '../components/Button'
@@ -12,6 +12,7 @@ import { Firebase } from '../components/Firebase'
 import { TextButton } from '../components/TextButton'
 
 const {width : WIDTH} = Dimensions.get('window')
+const {height : HEIGHT} = Dimensions.get('window')
 
 export const HomeScreen = () =>{
   
@@ -121,9 +122,11 @@ export const HomeScreen = () =>{
         {state.FetchState && state.DataObjs != null ? (
             <View style = {styles.containerDetail}>
               <Card containerStyle = {styles.card}>
-                <Text style = {styles.logoText}>
-                  ยินดีต้อนรับสู่ THAT FISH {Name}
-                </Text>
+                <View style = {styles.TextContainer}>
+                    <Text style = {styles.logoText}>
+                      ยินดีต้อนรับสู่ THAT FISH {Name}
+                    </Text>
+                </View>
                 <Button
                   title = 'ออกจากระบบ'
                   onPress = {() => onPressSigOut()}
@@ -144,31 +147,33 @@ export const HomeScreen = () =>{
                 />
               </View>
             </View>
-              <ScrollView style = {styles.containerScrollView}>
-              {
-                state.DataObjs.map((item, index) => (
-                    <React.Fragment key = {item.id}>
-                      <CardFeedView
-                        name = {item.name}
-                        nameFeed = {item.nameFeed}
-                        percent = {item.Precent}
-                        day = {item.age}
-                        quantity = {item.quantity}
-                        food = {item.food}
-                        id = {item.id}
-                        token = {Token}
-                      />
-                      </React.Fragment>
-                    ))
-              }
-              </ScrollView>
+                <FlatList
+                style = {styles.containerScrollView}
+                  data={state.DataObjs}
+                  renderItem={({ item }) =>                     
+                  <CardFeedView
+                      name = {item.name}
+                      nameFeed = {item.nameFeed}
+                      percent = {item.Precent}
+                      day = {item.age}
+                      quantity = {item.quantity}
+                      food = {item.food}
+                      id = {item.id}
+                      token = {Token}
+                      count = {item.count}
+                      dayleft = {item.dayLeft}
+                    />}
+                    keyExtractor={item => item.id}
+                  />
             </View>
         ):(          
         <View style = {styles.containerDetail}>
           <Card containerStyle = {styles.card}>
-            <Text style = {styles.logoText}>
+            <View style = {styles.TextContainer}>
+                <Text style = {styles.logoText}>
                 ยินดีต้อนรับสู่ THAT FISH {Name}
-            </Text>
+                </Text>
+            </View>
             <Button
                 title = 'ออกจากระบบ'
                 onPress = {() => onPressSigOut()}
@@ -204,16 +209,20 @@ export const HomeScreen = () =>{
 
     containerDetail:{
       justifyContent:'center',
-      alignContent: 'center',
+      alignItems: 'center',
       backgroundColor: '#FFF',
     },
 
     containerScrollView: {
-      marginBottom:150,
+      marginBottom:HEIGHT*0.15
     },
 
     containerHeader: {
       flexDirection:'row',
+      flexWrap: 'wrap',
+      justifyContent:'center',
+      alignItems: 'flex-start',
+      marginHorizontal:5,
     },
 
     containerTextList:{
@@ -221,7 +230,8 @@ export const HomeScreen = () =>{
     },
 
     containerButtonRefec:{
-      marginLeft:WIDTH-WIDTH/2,
+      marginTop:25,
+      marginLeft:WIDTH*0.45,
     },
 
     card:{
@@ -230,15 +240,24 @@ export const HomeScreen = () =>{
                     width: 0,
                     height: 5,
                     },
-      shadowOpacity: 0.34,
-      shadowRadius: 6.27,
-
+      shadowOpacity: 0.5,
+      shadowRadius: 10,
+      borderRadius:20,
+      borderWidth:2,
+      borderColor:'black',
+      elevation:8,
     },
 
     logoText: {
         color: 'black',
-        fontSize: 49,
+        fontSize: WIDTH*0.1,
         fontFamily: 'iannnnnVCD',
+
+    },
+
+    TextContainer:{
+      justifyContent:'center',
+      alignItems: 'center',
     },
 
     text: {

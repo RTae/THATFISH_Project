@@ -1,9 +1,9 @@
 import React from "react";
+import { Image } from 'react-native'
 import { SafeAreaProvider} from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { HomeStackScreen } from '../navigator/HomeStack'
 import { FishStackScreen } from '../navigator/FishStack'
 import { CalculateStack } from '../navigator/CalculateStack'
@@ -25,33 +25,31 @@ export const MainNavigator = ({navigation}) => {
                 <Tab.Navigator
                 screenOptions={({ route }) => ({
                   tabBarIcon: ({ focused, color }) => {
-                    let iconName;
                     let iconSize;
                     if (route.name === 'Home') {
-                      iconName = focused ? 'home-circle' : 'home';
-                      iconSize = focused ? 45 : 25;
+                      iconSize = focused ? 50 : 35;
+                      return <Image source={require('../assets/images/HOME.png')} style={{width: iconSize, height: iconSize, resizeMode:'contain'}}/>
         
                     } else if (route.name === 'Fishs') {
-                      iconName = focused ? 'view-list' : 'format-list-bulleted';
-                      iconSize = focused ? 45 : 25;
+                      iconSize = focused ? 50 : 35;
+                      return <Image source={require('../assets/images/CAL.png')} style={{width: iconSize, height: iconSize, resizeMode:'contain'}}/>
         
                     }
                     else if (route.name === 'Calculate') {
-                      iconName = focused ? 'cube' : 'fish';
-                      iconSize = focused ? 45 : 25;
+                      iconSize = focused ? 50 : 35;
+                      return <Image source={require('../assets/images/FISH.png')} style={{width: iconSize+20, height: iconSize, resizeMode:'contain'}}/>
                       
                     }
-                    return <MaterialCommunityIcons name={iconName} size={iconSize} color={color} />;
                   },
                 })}
                 tabBarOptions={{
                   activeTintColor: 'tomato',
                   inactiveTintColor: 'gray',
-                  activeBackgroundColor: '#1A1260',
-                  inactiveBackgroundColor: '#1A1260',
+                  activeBackgroundColor: '#B5D572',
+                  inactiveBackgroundColor: '#B5D572',
                   showLabel:false,
                   style: {
-                    backgroundColor: '#1A1260',
+                    backgroundColor: '#B5D572',
                   }
                 }}
               >

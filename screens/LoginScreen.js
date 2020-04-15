@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font'
 import {StyleSheet, View, Text, Image, Dimensions, Alert } from 'react-native'
+import {Card, Paragraph } from 'react-native-paper';
+import Modal from 'react-native-modal';
 import Logo from '../assets/images/icon.png'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons'
@@ -8,14 +10,20 @@ import { AuthContext } from "../components/context";
 import { Button } from '../components/Button';
 import { SplashScreen } from './SplashScreen'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { TextButton } from '../components/TextButton'
+import { SocialIcon } from 'react-native-elements'
 
+const infoText = '  Application นี้เป็นส่วนหนึ่งของวิชา GEN111 KMUTT เราทำ Application นี้ขึ้นมาเพื่อให้ความรู้และความสะดวกสบายในการเลี้ยงปลาเกษตรมากขึ้น พวกเราหวังว่างานของพวกจะช่วยให้คนรุ่นใหม่เกิดความสนใจในการเลี้ยงปลาเกษตรเป็นอาชีพ โดย Application นี้จะปล่อยเป็น open source สำหรับผู้ที่ต้องการต่อยอดในอนาคต'
 
 const {width : WIDTH} = Dimensions.get('window')
+const {height : HEIGHT} = Dimensions.get('window')
+
 
 export const LoginScreen = ({navigation}) => {
 
     const [Name, setName] = useState('');
     const [LoadFontState, setLoadFontState] = useState(false)
+    const [ShowInfo, setShowInfo] = useState(false)
     const { signIn } = React.useContext(AuthContext);
 
     useEffect(() =>{
@@ -45,9 +53,14 @@ export const LoginScreen = ({navigation}) => {
         navigation.navigate('Register')
     }
 
+    const onPressShowInfo = () => {
+        setShowInfo(!ShowInfo)
+    }
+
     return(
         <SafeAreaView style = {styles.container}>
         {LoadFontState ? (
+            <View>
                 <View style = {styles.container} >
                         <View style = {styles.logoContainer}>
                             <Image source = {Logo} style = {styles.logo}/>
@@ -58,7 +71,7 @@ export const LoginScreen = ({navigation}) => {
                             <TextInput 
                                     style = {styles.input}
                                     placeholder = {'ชื่อ'}
-                                    placeholderTextColor = {'rgba(255, 255, 255, 0.9)'}
+                                    placeholderTextColor = {'rgba(255, 255, 255, 1)'}
                                     underlineColorAndroid = 'transparent'
                                     value = {Name}
                                     onChangeText={setName}
@@ -72,20 +85,61 @@ export const LoginScreen = ({navigation}) => {
                         
                         <Button
                             title = {'เริ่ม'}
+                            color = '#0390A0'
                             onPress = {() => onPressLogin(Name)}
                         />
 
                         <Button
                             title = {'ลงทะเบียน'}
+                            color = '#236734'
                             onPress = {() => onPressSigup()} 
                         />
-
-                        <View style = {styles.detailContainer}>
-                            <Text style = {styles.detailA}>FROM</Text>
-                            <Text style = {styles.detailB}>KMUTT</Text>
-                        </View>
-
                 </View>
+                <View style = {{flexDirection:'row'}}>
+                    <View style = {styles.detailContainer}>
+                        <Text style = {styles.detailA}>FROM</Text>
+                        <Text style = {styles.detailB}>KMUTT</Text>
+                    </View>
+                    <View style = {{marginTop: WIDTH*0.25,marginLeft:WIDTH*0.3}}>
+                        <TextButton
+                            title = ''
+                            width = {40}
+                            logo = {'exclamation-circle'}
+                            onPress = {()=>onPressShowInfo()}
+                            Color = {'#d78547'}
+                        />
+                    </View>
+                </View>
+                <View >  
+                <Modal isVisible={ShowInfo}>
+                    <View style = {{justifyContent: "flex-end",alignItems:'center',}}>  
+                        <Card style = {{height:HEIGHT*0.4,width:WIDTH*0.9, borderRadius:20,}}>
+                            <Card.Title title="About us"/>
+                            <Card.Content>
+                                <Paragraph style = {{fontFamily:'iannnnnVCD',fontSize:25}}>
+                                        {infoText}
+                                </Paragraph>
+                            </Card.Content>
+                            <Card.Title title="Support us"/>
+                            <View style = {{flexDirection:'row'}}>
+                                <SocialIcon
+                                    style = {{height:30,width:30,marginLeft:15}}
+                                    iconSize = {30}
+                                    raised={true}
+                                    type='github'
+                                    />
+                                <Paragraph style = {{fontFamily:'iannnnnVCD',fontSize:25,paddingLeft:15,marginTop:10,}}>
+                                    https://github.com/RTae
+                                </Paragraph>
+                            </View>
+                        </Card>
+                        <Button 
+                            title = 'ปิด'
+                            onPress = {() => onPressShowInfo()}/>
+                    </View >  
+                </Modal>
+                </View> 
+            </View>
         ):(
             <SplashScreen/>
         )}
@@ -96,24 +150,28 @@ export const LoginScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex : 1,
-        justifyContent : 'center',
-        alignItems : 'center',
+        justifyContent: "flex-end",
+        alignItems:'center',
         backgroundColor: '#FFF',
     },
 
     logoContainer:{
-        alignItems: 'center',
-        marginTop:50
+        marginTop:WIDTH*0.2,
+        alignItems : 'center',
+        justifyContent:'center',
+        marginBottom:WIDTH*0.1,
     },
 
     detailContainer:{
         alignItems: 'center',
-        marginTop: 130,
+        marginTop: WIDTH*0.25,
+        marginLeft:WIDTH*0.4
     },
 
     logo : {
         width:350,
-        height:250,
+        height:350,
+        overflow:'hidden'
     },
 
     logoText: {
@@ -129,7 +187,7 @@ const styles = StyleSheet.create({
         fontSize: 35,
         alignItems:"center",
         paddingLeft: 45,
-        backgroundColor: 'rgba(0,122,255,0.7)',
+        backgroundColor: '#7FC3E8',
         color: 'rgba(255,255,255,0.7)',
         marginHorizontal: 25,
         fontFamily:'iannnnnVCD',

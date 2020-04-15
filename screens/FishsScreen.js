@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useReducer, useMemo } from "react";
-import { StyleSheet, View, ActivityIndicator, ScrollView } from 'react-native'
+import React, { useEffect, useReducer } from "react";
+import { StyleSheet, View, ActivityIndicator, ScrollView, Dimensions } from 'react-native'
 import Modal from 'react-native-modal';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FishButton } from '../components/ิFishButton'
+import { FishButton } from '../components/FishButton'
 import { PopUpFish } from '../components/popUpFish'
 import { Firebase } from '../components/Firebase'
 import { Button } from '../components/Button'
+
+const {width : WIDTH} = Dimensions.get('window')
 
 export const FishScreen = () => {
 
@@ -27,6 +29,7 @@ export const FishScreen = () => {
             BioPopup: action.bio,
             EyePopup: action.eye,
             SizePopup: action.size,
+            RefPopup: action.ref
           }
         case 'POPUP':
           return {
@@ -45,6 +48,7 @@ export const FishScreen = () => {
       BioPopup: null,
       EyePopup: null,
       SizePopup: null,
+      RefPopup: null,
     }
   );
 
@@ -62,7 +66,7 @@ export const FishScreen = () => {
   const _popUp = (id) => {
     var data = state.DataDicts[id]
     if(state.PopupState != true){
-      dispatch({ type: 'PATCH_DATA', title:data['name'], pic:data['pic'], bio:data['bio'] ,eye:data['idetity'], size:data['size'] })
+      dispatch({ type: 'PATCH_DATA', title:data['name'], pic:data['pic'], bio:data['bio'] ,eye:data['idetity'], size:data['size'],ref:data['ref'] })
       dispatch({ type: 'POPUP', state:!state.PopupState})
 
     }
@@ -76,17 +80,19 @@ export const FishScreen = () => {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.ScorllListView}>
+          <View style={styles.GroupOfButtonContrainer}>
           {
-            data.map((item, index) => (
-              <React.Fragment key = {item.id}>
-                <FishButton
-                  title = {item.name}
-                  onPress = {() => _popUp(item.id)}
-                  pic = {item.pic}
-                />
-              </React.Fragment>
-            ))
-          }
+              data.map((item, index) => (
+                <React.Fragment key = {item.id}>
+                  <FishButton
+                    title = {item.name}
+                    onPress = {() => _popUp(item.id)}
+                    pic = {item.icon}
+                  />
+                </React.Fragment>
+              ))
+            }
+          </View>
         </ScrollView> 
         <View>  
         <Modal isVisible={state.PopupState}>
@@ -95,10 +101,13 @@ export const FishScreen = () => {
                 pic = {state.PicPopup}
                 bio = {state.BioPopup}
                 eye = {state.EyePopup}
+                refercence = {state.RefPopup}
               />
+              <View style = {{marginLeft:WIDTH*0.02}}>
               <Button 
                   title = 'ปิด'
                   onPress = {() => _popUp()}/>
+              </View>
         </Modal>
         </View> 
       </SafeAreaView>
@@ -125,12 +134,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
-  item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
+
   ScorllListView: {
-    marginHorizontal: 40,
   },
+
+  GroupOfButtonContrainer:{
+    flexDirection:'row',
+    flexWrap: 'wrap',
+    justifyContent:'center',
+    alignItems: 'flex-start',
+    marginHorizontal:1,
+  }
 });

@@ -25,6 +25,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "This app is part of GEN111 KMUTT. We build this app for who interesting in fish and want to learn how to treat them."
   }
 }

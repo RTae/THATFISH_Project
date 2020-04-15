@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, Component } from "react"
 import * as Font from 'expo-font'
-import {StyleSheet, View, Alert, Dimensions, KeyboardAvoidingView } from 'react-native'
+import {StyleSheet, View, Alert, Dimensions, KeyboardAvoidingView, Image, Platform, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { AuthContext } from "../components/context"
 import { Button } from '../components/Button'
-import { SplashScreen } from '../screens/SplashScreen'
+import { SplashScreen } from './SplashScreen'
 import { ResgiterPushNotification } from '../components/Module/registerForPushNotificationsAsync'
 
 const {width : WIDTH} = Dimensions.get('window')
@@ -17,17 +17,19 @@ export const SignUpScreen = ({navigation}) => {
     const [ExpoToken, setExpoToken] = useState(false)
     const { signUp } = React.useContext(AuthContext);
 
-    useEffect(() =>{
-        _loadFont()
-        getExpoToken()
-    },[])
 
-    const _loadFont = async () =>{
-      await Font.loadAsync({
-        Layiji: require('../assets/fonts/Layiji.ttf'),
-      })
-      setLoadFontState(true)
-    }
+    useEffect(() =>{
+        let mounted = true;
+        getExpoToken()
+        Font.loadAsync({
+            Layiji: require('../assets/fonts/Layiji.ttf'),
+        }).then(() => {
+            if(mounted){
+                setLoadFontState(true)
+            }
+        })
+        return () => mounted = false;
+    },[])
 
     const getExpoToken = async () => {
         var token = await ResgiterPushNotification()
@@ -71,28 +73,40 @@ export const SignUpScreen = ({navigation}) => {
     return(
         <View style = {styles.container}>
         {LoadFontState ? (
-                <View style = {styles.container} >
-                        <View style = {styles.inputContainer}>
-                            <TextInput 
-                                    style = {styles.input}
-                                    placeholder = {'ชื่อ'}
-                                    placeholderTextColor = {'rgba(255, 255, 255, 0.9)'}
-                                    underlineColorAndroid = 'transparent'
-                                    value = {Name}
-                                    onChangeText={setName}
+                <KeyboardAvoidingView behavior={Platform.Os == "ios" ? "padding" : null} style={{flex:1}} >
+                    <SafeAreaView style={styles.container} >
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <View style = {styles.container}>
 
-                            />
-                            <FontAwesome5 name = 'user'
-                                size = {26} 
-                                color = '#FFF'
-                                style = {styles.inputIcon}/>
-                        </View>
+                                <View style = {styles.logoContainer}>
+                                    <Image source = {require('../assets/images/farm.png')} style = {styles.logo}/>
+                                </View>
 
-                        <Button
-                            title = {'ลงทะเบียน'}
-                            onPress = {() => onPressRegister(Name)}
-                        />
-                </View>
+                                <View style = {styles.inputContainer}>
+                                    <TextInput 
+                                            style = {styles.input}
+                                            placeholder = {'ชื่อ'}
+                                            placeholderTextColor = {'rgba(255, 255, 255, 0.9)'}
+                                            underlineColorAndroid = 'transparent'
+                                            value = {Name}
+                                            onChangeText={setName}
+
+                                    />
+                                    <FontAwesome5 name = 'user'
+                                        size = {26} 
+                                        color = '#FFF'
+                                        style = {styles.inputIcon}/>
+                                </View>
+
+                                <Button
+                                    title = {'ลงทะเบียน'}
+                                    onPress = {() => onPressRegister(Name)}
+                                />
+                                <View style={{ flex : 1 }} />
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </SafeAreaView>
+            </KeyboardAvoidingView>
         ):(
             <SplashScreen/>
         )}
@@ -103,23 +117,28 @@ export const SignUpScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex : 1,
-        justifyContent : 'center',
-        alignItems : 'center',
+        justifyContent: "flex-end",
+        alignItems:'center',
         backgroundColor: '#FFF',
     },
 
     logoContainer:{
-        alignItems: 'center',
-        marginTop:50
+        marginTop:WIDTH*0.2,
+        marginBottom:80,
+        alignItems : 'center',
+        justifyContent:'center',
+
     },
 
-
-    logoText: {
-        color: 'black',
-        fontSize: 90,
-        fontFamily:'Layiji',
-        opacity: 1,
+    logo : {
+        width:200,
+        height:200,
+        borderRadius: 200 / 2,
+        borderWidth:1,
+        borderColor:'black',
+        overflow: 'hidden'
     },
+
     input : {
         width: WIDTH - 55,
         height : 50,
@@ -138,7 +157,7 @@ const styles = StyleSheet.create({
         left : 37,
     },
     inputContainer: {
-        marginTop : 5,
+        marginTop : 10,
     },
     text: {
         color : '#FFF',

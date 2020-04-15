@@ -6,7 +6,7 @@ const {width : WIDTH} = Dimensions.get('window')
 
 export const Button = (props) => {
  
-  const { title = 'Enter', onPress }  = props
+  const { title = 'Enter', color = '#7FC3E8', onPress }  = props
   const [LoadFontState, setLoadFontState] = useState(false)
 
   useEffect(() =>{
@@ -21,47 +21,50 @@ export const Button = (props) => {
     return () => mounted = false;
   },[])
 
-  if(LoadFontState){
     return (
-      <TouchableOpacity style = {styles.btnLogin}
-                        onPress = {onPress}>
-          <View style = {styles.textContainer}>
-            <Text style = {[styles.text, {fontFamily: 'iannnnnVCD'}]}>
-              {props.title}
-            </Text>
-          </View>
-      </TouchableOpacity>
+      <View>
+      {LoadFontState ? (
+      <View>
+        <TouchableOpacity style = {[styles.btnLogin, {backgroundColor: color}]}
+                          onPress = {onPress}>
+            <View style = {styles.textContainer}>
+              <Text style = {[styles.text, {fontFamily: 'iannnnnVCD'}]}>
+                {props.title}
+              </Text>
+            </View>
+        </TouchableOpacity>
+      </View>
+      ):(
+        <View>
+          <TouchableOpacity style = {[styles.btnLogin, {backgroundColor: color}]}
+                          onPress = {onPress}>
+            <View style = {styles.textContainer}>
+              <Text style = {styles.text}>
+                {props.title}
+              </Text>
+            </View>
+          </TouchableOpacity>
+      </View>
+      )}
+      </View>
     )
-  }
-  else{
-    return (
-      <TouchableOpacity style = {styles.btnLogin}
-                        onPress = {onPress}>
-          <View style = {styles.textContainer}>
-            <Text style = {styles.text}>
-              {props.title}
-            </Text>
-          </View>
-      </TouchableOpacity>
-    )
-  }
 }
 
 const styles = StyleSheet.create({
 
   textContainer:{
-    flex:0.6,
   },
+
   text: {
     color : '#FFF',
-    fontSize: 40,
-    textAlign: 'center'
+    fontSize: WIDTH*0.095,
+    textAlign: 'center',
+
   },
   btnLogin: {
     width: WIDTH - 60,
     height : 50,
     borderRadius: 25,
-    backgroundColor: '#1A1260',
     justifyContent: 'center',
     marginTop: 25,
 },

@@ -2,21 +2,26 @@ import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font'
 import { Sheet } from './Sheet'
 import { SplashScreen } from '../screens/SplashScreen'
-import { StyleSheet, Image, View, Text, ScrollView, Platform} from 'react-native'
+import { StyleSheet, Image, View, Text, ScrollView, Dimensions} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TextButton } from './TextButton'
 
+const {width : WIDTH} = Dimensions.get('window')
 
 export const PopUpFish = (props) => {
  
-    const { title, pic, bio, eye }  = props
+    const { title, pic, bio, eye, refercence }  = props
     const [LoadFontState, setLoadFontState] = useState(false)
     const [showBio, setshowBio] = useState(false)
     const [showEye, setshowEye] = useState(false)
     const [showTable, setshowTable] = useState(false)
+    const [showRef, setshowRef] = useState(false)
+    const [Ref, setRef] = useState(null)
+
 
     useEffect(() =>{
         _loadFont()
+        stringTolist(props.refercence)
       },[])
 
     const _loadFont = async () =>{
@@ -27,6 +32,11 @@ export const PopUpFish = (props) => {
         })
         setLoadFontState(true)
     }
+
+    const stringTolist = (string) => {
+        var array = string.replace('[',' ').replace(']',' ').split(',')
+        setRef(array)
+    }
   
     return (
         <SafeAreaView style={styles.container}>
@@ -36,19 +46,7 @@ export const PopUpFish = (props) => {
                         <View style={styles.titleContainer}>
                             <Text style={styles.textTitle}>{props.title}</Text>
                         </View>
-                        <View style={[styles.imageContainer, Platform.OS === 'ios' ? (
-                            {
-                            shadowColor: "#000",
-                            shadowOffset: {
-                                width: 0,
-                                height: 4,
-                            },
-                            shadowOpacity: 0.30,
-                            shadowRadius: 4.65,
-                            }) :({
-                                elevation: 8
-                            })
-                            ]}>
+                        <View style={styles.imageContainer}>
                             <Image
                                 style={styles.image}
                                 source={{uri: props.pic}}
@@ -107,6 +105,26 @@ export const PopUpFish = (props) => {
                                 <View/>
                             )}
                         </View>
+
+                        <View style = {styles.RefContainer}>
+                            <View style={styles.headerContainer}>
+                                <TextButton
+                                    width = {190}
+                                    title = 'แหล่งที่มา'
+                                    onPress = {() => setshowRef(!showRef)}
+                                />
+                            </View>
+                            
+                            <View style = {styles.RefInnerContainer}>
+                            {showRef ? (                             
+                                Ref.map((item , index ) => (
+                                    <Text key = {index} style = {styles.TextRef}>{item}</Text>
+                                ))                                
+                            ):(
+                                <View/>
+                            )}
+                            </View>
+                        </View>
                 </ScrollView>
             ):(
                 <SplashScreen/>
@@ -133,7 +151,14 @@ const styles = StyleSheet.create({
         flex:0.25,
         alignItems: 'center',
         justifyContent: 'center',
-        alignContent: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+                width: 0,
+                height: 4,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 7,
+        elevation: 8
         //backgroundColor:'yellow',
     },
 
@@ -157,6 +182,7 @@ const styles = StyleSheet.create({
     headerContainer:{
         //backgroundColor:'red',
         paddingLeft:27,
+        marginTop:15,
     },
 
     infoContainer:{
@@ -165,6 +191,21 @@ const styles = StyleSheet.create({
         //backgroundColor:'red',
         paddingLeft:30,
         paddingRight:30,
+    },
+
+    RefContainer:{
+        flex:1,
+    },
+
+    RefInnerContainer:{
+        paddingLeft:20,
+        paddingRight:20,
+
+    },
+
+    TextRef:{
+        fontSize:15,
+        fontFamily:'Nithan',
     },
 
     textHeader:{
@@ -178,14 +219,17 @@ const styles = StyleSheet.create({
     },
 
     textTitle:{
-        fontSize:100,
+        fontSize:WIDTH*0.2,
         fontFamily:'iannnnnVCD',
     },
 
     image:{
         width: 300,
         height: 200,
-        resizeMode: 'contain',
-
+        resizeMode: 'cover',
+        borderRadius:100,
+        borderWidth:2,
+        borderColor:'black',
+        
     },
 })

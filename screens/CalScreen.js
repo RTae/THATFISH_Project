@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer, useMemo } from "react";
 import { StyleSheet, View, ActivityIndicator, ScrollView } from 'react-native'
 import * as Font from 'expo-font'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FishButton } from '../components/ิFishButton'
+import { FishButton } from '../components/FishButton'
 import { Firebase } from '../components/Firebase'
 
 
@@ -54,17 +54,19 @@ export const PreCal = ({ navigation }) => {
       return (
         <SafeAreaView style={styles.container}>
           <ScrollView style={styles.ScorllListView}>
-            {
-              data.map((item, index) => (
-                <React.Fragment key = {item.id}>
-                  <FishButton
-                    title = {item.name}
-                    onPress = {() => onPressFishButton(item.name,item.pic)}
-                    pic = {item.pic}
-                  />
-                </React.Fragment>
-              ))
-            }
+            <View style={styles.GroupOfButtonContrainer}>
+              {
+                data.map((item, index) => (
+                  <React.Fragment key = {item.id}>
+                    <FishButton
+                      title = {item.name}
+                      onPress = {() => onPressFishButton(item.name,item.pic)}
+                      pic = {item.icon}
+                    />
+                  </React.Fragment>
+                ))
+              }
+            </View>
           </ScrollView> 
         </SafeAreaView>
       );
@@ -112,6 +114,12 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   ScorllListView: {
-    marginHorizontal: 40,
   },
+  GroupOfButtonContrainer:{
+    flexDirection:'row',
+    flexWrap: 'wrap',
+    justifyContent:'center',
+    alignItems: 'flex-start',
+    marginHorizontal:1,
+  }
 });

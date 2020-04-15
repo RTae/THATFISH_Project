@@ -7,11 +7,11 @@ export const Header = (title) => {
         headerShown: true,
         title: title,
         headerStyle: {
-            backgroundColor: '#1A1260',
+            backgroundColor: '#B5D572',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
-            fontSize : 50,
+            fontSize : 45,
             fontFamily:'iannnnnVCD',
             textAlign: 'center',
         },

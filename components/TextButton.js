@@ -46,7 +46,7 @@ export const TextButton = (props) => {
               {props.title}
             </Text>
             <View style = {styles.inputIcon}>
-            <FontAwesome5 name = 'caret-square-down'
+            <FontAwesome5 name = {logo}
                           size = {20} 
                           color = {Color}/>
             </View>
@@ -67,8 +67,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   btnLogin: {
-    height : 47,
-    marginTop: 25,
+    height : 35,
   },
 
   inputIcon: {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Image, View, Text, Platform, Dimensions, Alert, AsyncStorage} from 'react-native'
+import { StyleSheet, Image, View, Text, Platform, Dimensions, Alert, AsyncStorage, TouchableWithoutFeedback, Keyboard} from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { Button } from '../components/Button'
@@ -62,6 +62,7 @@ export const CalulateScreen = ({navigation,route}) => {
 
     if(FetchState){
       return(
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style = {styles.container}>
               <View style={[styles.imageContainer, Platform.OS === 'ios' ? (
                     {
@@ -90,7 +91,7 @@ export const CalulateScreen = ({navigation,route}) => {
               <View style = {styles.inputContainer}>
                 <View style = {styles.inputEach} >
                     <TextInput 
-                        style = {styles.input}
+                        style = {[styles.input, {backgroundColor: '#AADFE6'}]}
                         placeholder = {'ชื่อบ่อ'}
                         placeholderTextColor = {'rgba(255, 255, 255, 0.9)'}
                         underlineColorAndroid = 'transparent'
@@ -105,7 +106,7 @@ export const CalulateScreen = ({navigation,route}) => {
                 
                 <View style = {styles.inputEach} >
                     <TextInput 
-                        style = {styles.input}
+                        style = {[styles.input, {backgroundColor: '#79E0C3'}]}
                         placeholder = {'อายุปลา'}
                         placeholderTextColor = {'rgba(255, 255, 255, 0.9)'}
                         underlineColorAndroid = 'transparent'
@@ -120,7 +121,7 @@ export const CalulateScreen = ({navigation,route}) => {
                 
                 <View style = {styles.inputEach} >
                   <TextInput 
-                      style = {styles.input}
+                      style = {[styles.input, {backgroundColor: '#0390A0'}]}
                       placeholder = {'จำนวน'}
                       placeholderTextColor = {'rgba(255, 255, 255, 0.9)'}
                       underlineColorAndroid = 'transparent'
@@ -143,6 +144,7 @@ export const CalulateScreen = ({navigation,route}) => {
                 </View>
               </View>
           </View>
+          </TouchableWithoutFeedback>
       )
   }else{
     return (
@@ -197,6 +199,9 @@ const styles = StyleSheet.create({
       width: 300,
       height: 200,
       resizeMode: 'contain',
+      borderRadius:100,
+      borderWidth:2,
+      borderColor:'black'
     },
 
     textTitle:{
@@ -213,7 +218,6 @@ const styles = StyleSheet.create({
       fontSize: 35,
       alignItems:"center",
       paddingLeft: 45,
-      backgroundColor: 'rgba(0,122,255,0.7)',
       color: 'rgba(255,255,255,0.7)',
       marginHorizontal: 25,
       fontFamily:'iannnnnVCD',
