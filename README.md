@@ -1,2 +1,2 @@
 # THATFISH_MobileApp
-This is MobileApp that create with expo.This app is part of GEN111 From KMUTT 
+This is Mobile application that create with React-native .This app is part of GEN111 From KMUTT 
