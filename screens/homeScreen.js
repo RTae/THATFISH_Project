@@ -124,7 +124,7 @@ export const HomeScreen = () =>{
               <Card containerStyle = {styles.card}>
                 <View style = {styles.TextContainer}>
                     <Text style = {styles.logoText}>
-                      ยินดีต้อนรับสู่ THAT FISH {Name}
+                      ยินดีต้อนรับสู่ THAT FISH, {Name}
                     </Text>
                 </View>
                 <Button
@@ -171,7 +171,7 @@ export const HomeScreen = () =>{
           <Card containerStyle = {styles.card}>
             <View style = {styles.TextContainer}>
                 <Text style = {styles.logoText}>
-                ยินดีต้อนรับสู่ THAT FISH {Name}
+                ยินดีต้อนรับสู่ THAT FISH, {Name}
                 </Text>
             </View>
             <Button

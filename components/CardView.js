@@ -62,7 +62,7 @@ export const CardFeedView = (props) =>{
               </Text>
               <View style = {{justifyContent:'center',alignItems: 'center',marginTop:5,marginBottom:5, flexDirection:'row'}}>
                 <ProgressBar progress={props.percent} color={'#0093ff'} style = {{width:WIDTH*0.68, height:10, borderRadius:10, borderWidth:2,}}/>
-                <Text style = {{fontFamily:'iannnnnVCD',fontSize:25,paddingBottom:5,}} >  {props.percent * 100} %</Text>
+                <Text style = {{fontFamily:'iannnnnVCD',fontSize:25,paddingBottom:5,}} >  {Math.round(parseFloat(props.percent)* 100)} %</Text>
               </View>
               <Text style = {styles.text}>
                     จำนวน : {props.quantity} ตัว

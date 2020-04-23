@@ -3,7 +3,7 @@ import * as Font from 'expo-font'
 import {StyleSheet, View, Text, Image, Dimensions, Alert } from 'react-native'
 import {Card, Paragraph } from 'react-native-paper';
 import Modal from 'react-native-modal';
-import Logo from '../assets/images/icon.png'
+import Logo from '../assets/images/logo.png'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { AuthContext } from "../components/context";
@@ -169,8 +169,8 @@ const styles = StyleSheet.create({
     },
 
     logo : {
-        width:350,
-        height:350,
+        width:200,
+        height:200,
         overflow:'hidden'
     },
 

@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
     },
     
     imageContainer:{
+      marginTop:15,
       //backgroundColor:'yellow',
     },
 
@@ -176,15 +177,14 @@ const styles = StyleSheet.create({
 
     inputContainer: {
       //backgroundColor:'grey',
+
     },
 
     buttonContainer:{
       //backgroundColor:'red',
-      marginBottom:30,
     },
 
     button:{
-      marginTop:30
     },
 
     text:{
