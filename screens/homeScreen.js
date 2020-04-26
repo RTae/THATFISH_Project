@@ -214,7 +214,7 @@ export const HomeScreen = () =>{
     },
 
     containerScrollView: {
-      marginBottom:HEIGHT*0.05
+      marginBottom:HEIGHT*0.02
     },
 
     containerHeader: {
