@@ -214,7 +214,7 @@ export const HomeScreen = () =>{
     },
 
     containerScrollView: {
-      marginBottom:HEIGHT*0.15
+      marginBottom:HEIGHT*0.05
     },
 
     containerHeader: {
@@ -231,7 +231,7 @@ export const HomeScreen = () =>{
 
     containerButtonRefec:{
       marginTop:25,
-      marginLeft:WIDTH*0.45,
+      marginLeft:WIDTH*0.3,
     },
 
     card:{
