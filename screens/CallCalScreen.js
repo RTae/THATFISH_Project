@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Image, View, Text, Platform, Dimensions, Alert, AsyncStorage, TouchableWithoutFeedback, Keyboard} from 'react-native'
+import { StyleSheet, Image, View, Text, Platform, Dimensions, Alert, AsyncStorage, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView} from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { Button } from '../components/Button'
@@ -62,95 +62,100 @@ export const CalulateScreen = ({navigation,route}) => {
 
     if(FetchState){
       return(
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style = {styles.container}>
-              <View style={[styles.imageContainer, Platform.OS === 'ios' ? (
-                    {
-                      shadowColor: "#000",
-                      shadowOffset: {
-                                  width: 0,
-                                  height: 4,
-                                  },
-                      shadowOpacity: 0.30,
-                      shadowRadius: 4.65,
-                      }) :({
-                            elevation: 8
-                            })
-                            ]}>
-                <Image
-                      style={styles.image}
-                      source={{uri: pic}}
-                    /> 
-              </View>
-              <View style={styles.titleContainer}>
-                <View style={styles.text} >
-                  <Text style={styles.textTitle}>{nameFish}</Text>
+        <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style = {styles.container}>
+                <View style={[styles.imageContainer, Platform.OS === 'ios' ? (
+                      {
+                        shadowColor: "#000",
+                        shadowOffset: {
+                                    width: 0,
+                                    height: 4,
+                                    },
+                        shadowOpacity: 0.30,
+                        shadowRadius: 4.65,
+                        }) :({
+                              elevation: 8
+                              })
+                              ]}>
+                  <Image
+                        style={styles.image}
+                        source={{uri: pic}}
+                      /> 
                 </View>
-              </View>
-              
-              <View style = {styles.inputContainer}>
-                <View style = {styles.inputEach} >
-                    <TextInput 
-                        style = {[styles.input, {backgroundColor: '#AADFE6'}]}
-                        placeholder = {'ชื่อบ่อ'}
-                        placeholderTextColor = {'rgba(255, 255, 255, 0.9)'}
-                        underlineColorAndroid = 'transparent'
-                        value = {Name}
-                        onChangeText={setName}
-                    />
-                    <FontAwesome5 name = 'fish'
-                        size = {25} 
+                <View style={styles.titleContainer}>
+                  <View style={styles.text} >
+                    <Text style={styles.textTitle}>{nameFish}</Text>
+                  </View>
+                </View>
+                
+                <View style = {styles.inputContainer}>
+                  <View style = {styles.inputEach} >
+                      <TextInput 
+                          style = {[styles.input, {backgroundColor: '#AADFE6'}]}
+                          placeholder = {'ชื่อบ่อ'}
+                          placeholderTextColor = {'rgba(255, 255, 255, 0.9)'}
+                          underlineColorAndroid = 'transparent'
+                          value = {Name}
+                          onChangeText={setName}
+                      />
+                      <FontAwesome5 name = 'fish'
+                          size = {25} 
+                          color = '#FFF'
+                          style = {styles.inputIcon}/>
+                  </View>
+                  
+                  <View style = {styles.inputEach} >
+                      <TextInput 
+                          style = {[styles.input, {backgroundColor: '#79E0C3'}]}
+                          placeholder = {'อายุปลา'}
+                          placeholderTextColor = {'rgba(255, 255, 255, 0.9)'}
+                          underlineColorAndroid = 'transparent'
+                          value = {Age}
+                          onChangeText={setAge}
+                      />
+                    <FontAwesome5 name = 'calendar-alt'
+                        size = {26} 
                         color = '#FFF'
                         style = {styles.inputIcon}/>
-                </View>
-                
-                <View style = {styles.inputEach} >
+                  </View>
+                  
+                  <View style = {styles.inputEach} >
                     <TextInput 
-                        style = {[styles.input, {backgroundColor: '#79E0C3'}]}
-                        placeholder = {'อายุปลา'}
+                        style = {[styles.input, {backgroundColor: '#0390A0'}]}
+                        placeholder = {'จำนวน'}
                         placeholderTextColor = {'rgba(255, 255, 255, 0.9)'}
                         underlineColorAndroid = 'transparent'
-                        value = {Age}
-                        onChangeText={setAge}
+                        value = {Quantity}
+                        onChangeText={setQuantity}
                     />
-                  <FontAwesome5 name = 'calendar-alt'
-                      size = {26} 
-                      color = '#FFF'
-                      style = {styles.inputIcon}/>
+                    <FontAwesome5 name = 'box-open'
+                        size = {23} 
+                        color = '#FFF'
+                        style = {styles.inputIcon}/>
+                  </View>
                 </View>
-                
-                <View style = {styles.inputEach} >
-                  <TextInput 
-                      style = {[styles.input, {backgroundColor: '#0390A0'}]}
-                      placeholder = {'จำนวน'}
-                      placeholderTextColor = {'rgba(255, 255, 255, 0.9)'}
-                      underlineColorAndroid = 'transparent'
-                      value = {Quantity}
-                      onChangeText={setQuantity}
-                  />
-                  <FontAwesome5 name = 'box-open'
-                      size = {23} 
-                      color = '#FFF'
-                      style = {styles.inputIcon}/>
-                </View>
-              </View>
 
-              <View style={styles.buttonContainer}>
-                <View style={styles.button}>
-                  <Button
-                        title='ยืนยัน'
-                        onPress={() => getData().then(() => {onPressAccept(nameFish,Name,Age,Quantity,Token)})}
-                  />
+                <View style={styles.buttonContainer}>
+                  <View style={styles.button}>
+                    <Button
+                          title='ยืนยัน'
+                          onPress={() => getData().then(() => {onPressAccept(nameFish,Name,Age,Quantity,Token)})}
+                    />
+                  </View>
                 </View>
-              </View>
-          </View>
-          </TouchableWithoutFeedback>
+            </View>
+            </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
+
       )
   }else{
     return (
-      <View style = {styles.container}>
-        <SplashScreen/>
-      </View>
+      <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} >
+        <View style = {styles.container}>
+          <SplashScreen/>
+        </View>
+      </KeyboardAvoidingView>
     )
   } 
 }

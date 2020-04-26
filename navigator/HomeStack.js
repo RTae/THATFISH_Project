@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { HomeScreen } from '../screens/HomeScreen'
+import { HomeScreen } from '../screens/homeScreen'
 import { Header } from '../components/Header'
 import * as Font from 'expo-font'
 

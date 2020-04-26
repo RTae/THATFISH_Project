@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as Font from 'expo-font'
-import {StyleSheet, View, Text, Image, Dimensions, Alert } from 'react-native'
+import {StyleSheet, View, Text, Image, Dimensions, Alert,TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native'
 import {Card, Paragraph } from 'react-native-paper';
 import Modal from 'react-native-modal';
 import Logo from '../assets/images/logo.png'
@@ -59,90 +59,94 @@ export const LoginScreen = ({navigation}) => {
 
     return(
         <SafeAreaView style = {styles.container}>
-        {LoadFontState ? (
-            <View>
-                <View style = {styles.container} >
-                        <View style = {styles.logoContainer}>
-                            <Image source = {Logo} style = {styles.logo}/>
-                            <Text style = {styles.logoText}>THATFISH</Text>
-                        </View>
+            <KeyboardAvoidingView behavior={'height'} style={{flex:1}} >
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    {LoadFontState ? (
+                        <View>
+                            <View style = {styles.container} >
+                                    <View style = {styles.logoContainer}>
+                                        <Image source = {Logo} style = {styles.logo}/>
+                                        <Text style = {styles.logoText}>THATFISH</Text>
+                                    </View>
 
-                        <View style = {styles.inputContainer}>
-                            <TextInput 
-                                    style = {styles.input}
-                                    placeholder = {'ชื่อ'}
-                                    placeholderTextColor = {'rgba(255, 255, 255, 1)'}
-                                    underlineColorAndroid = 'transparent'
-                                    value = {Name}
-                                    onChangeText={setName}
+                                    <View style = {styles.inputContainer}>
+                                        <TextInput 
+                                                style = {styles.input}
+                                                placeholder = {'ชื่อ'}
+                                                placeholderTextColor = {'rgba(255, 255, 255, 1)'}
+                                                underlineColorAndroid = 'transparent'
+                                                value = {Name}
+                                                onChangeText={setName}
 
-                            />
-                            <FontAwesome5 name = 'user'
-                                size = {26} 
-                                color = '#FFF'
-                                style = {styles.inputIcon}/>
-                        </View>
-                        
-                        <Button
-                            title = {'เริ่ม'}
-                            color = '#0390A0'
-                            onPress = {() => onPressLogin(Name)}
-                        />
-
-                        <Button
-                            title = {'ลงทะเบียน'}
-                            color = '#236734'
-                            onPress = {() => onPressSigup()} 
-                        />
-                </View>
-                <View style = {{flexDirection:'row'}}>
-                    <View style = {styles.detailContainer}>
-                        <Text style = {styles.detailA}>FROM</Text>
-                        <Text style = {styles.detailB}>KMUTT</Text>
-                    </View>
-                    <View style = {{marginTop: WIDTH*0.25,marginLeft:WIDTH*0.3}}>
-                        <TextButton
-                            title = ''
-                            width = {40}
-                            logo = {'exclamation-circle'}
-                            onPress = {()=>onPressShowInfo()}
-                            Color = {'#d78547'}
-                        />
-                    </View>
-                </View>
-                <View >  
-                <Modal isVisible={ShowInfo}>
-                    <View style = {{justifyContent: "flex-end",alignItems:'center',}}>  
-                        <Card style = {{height:HEIGHT*0.4,width:WIDTH*0.9, borderRadius:20,}}>
-                            <Card.Title title="About us"/>
-                            <Card.Content>
-                                <Paragraph style = {{fontFamily:'iannnnnVCD',fontSize:25}}>
-                                        {infoText}
-                                </Paragraph>
-                            </Card.Content>
-                            <Card.Title title="Support us"/>
-                            <View style = {{flexDirection:'row'}}>
-                                <SocialIcon
-                                    style = {{height:30,width:30,marginLeft:15}}
-                                    iconSize = {30}
-                                    raised={true}
-                                    type='github'
+                                        />
+                                        <FontAwesome5 name = 'user'
+                                            size = {26} 
+                                            color = '#FFF'
+                                            style = {styles.inputIcon}/>
+                                    </View>
+                                    
+                                    <Button
+                                        title = {'เริ่ม'}
+                                        color = '#0390A0'
+                                        onPress = {() => onPressLogin(Name)}
                                     />
-                                <Paragraph style = {{fontFamily:'iannnnnVCD',fontSize:25,paddingLeft:15,marginTop:10,}}>
-                                    https://github.com/RTae
-                                </Paragraph>
+
+                                    <Button
+                                        title = {'ลงทะเบียน'}
+                                        color = '#236734'
+                                        onPress = {() => onPressSigup()} 
+                                    />
                             </View>
-                        </Card>
-                        <Button 
-                            title = 'ปิด'
-                            onPress = {() => onPressShowInfo()}/>
-                    </View >  
-                </Modal>
-                </View> 
-            </View>
-        ):(
-            <SplashScreen/>
-        )}
+                            <View style = {{flexDirection:'row'}}>
+                                <View style = {styles.detailContainer}>
+                                    <Text style = {styles.detailA}>FROM</Text>
+                                    <Text style = {styles.detailB}>KMUTT</Text>
+                                </View>
+                                <View style = {{marginTop: WIDTH*0.25,marginLeft:WIDTH*0.3}}>
+                                    <TextButton
+                                        title = ''
+                                        width = {40}
+                                        logo = {'exclamation-circle'}
+                                        onPress = {()=>onPressShowInfo()}
+                                        Color = {'#d78547'}
+                                    />
+                                </View>
+                            </View>
+                            <View >  
+                            <Modal isVisible={ShowInfo}>
+                                <View style = {{justifyContent: "flex-end",alignItems:'center',}}>  
+                                    <Card style = {{height:HEIGHT*0.4,width:WIDTH*0.9, borderRadius:20,}}>
+                                        <Card.Title title="About us"/>
+                                        <Card.Content>
+                                            <Paragraph style = {{fontFamily:'iannnnnVCD',fontSize:25}}>
+                                                    {infoText}
+                                            </Paragraph>
+                                        </Card.Content>
+                                        <Card.Title title="Support us"/>
+                                        <View style = {{flexDirection:'row'}}>
+                                            <SocialIcon
+                                                style = {{height:30,width:30,marginLeft:15}}
+                                                iconSize = {30}
+                                                raised={true}
+                                                type='github'
+                                                />
+                                            <Paragraph style = {{fontFamily:'iannnnnVCD',fontSize:25,paddingLeft:15,marginTop:10,}}>
+                                                https://github.com/RTae
+                                            </Paragraph>
+                                        </View>
+                                    </Card>
+                                    <Button 
+                                        title = 'ปิด'
+                                        onPress = {() => onPressShowInfo()}/>
+                                </View >  
+                            </Modal>
+                            </View> 
+                        </View>
+                ):(
+                    <SplashScreen/>
+                )}
+                    </TouchableWithoutFeedback>
+                </KeyboardAvoidingView>
         </SafeAreaView>
     )
 }
